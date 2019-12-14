@@ -6,6 +6,13 @@ import org.jetbrains.exposed.sql.*
 import org.joda.time.DateTime
 
 class KweetDaoImpl(private val db: Database = Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver")) : KweetDao {
+
+    override fun init() {
+        db.transaction {
+            create(Kweets)
+        }
+    }
+
     override fun top(count: Int) = db.transaction {
         val k2 = Kweets.alias("k2")
         Kweets.join(k2, JoinType.LEFT, Kweets.id, k2[Kweets.replyTo])

@@ -6,6 +6,8 @@ import java.io.Closeable
 
 interface KweetDao : Closeable {
 
+    fun init()
+
     fun top(count:Int=10): List<Int>
 
     fun latest(count: Int=10) : List<Int>
