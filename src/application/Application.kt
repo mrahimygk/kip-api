@@ -47,16 +47,9 @@ fun main(args: Array<String>) {
 fun Application.mainModule() {
     userDao.init()
     kweetDao.init()
-
     environment.monitor.subscribe(ApplicationStopped) { pool.close() }
-
     dependencies()
-
-    routing {
-        hello()
-        root(kweetDao, userDao)
-        styles()
-    }
+    routing()
 }
 
 private fun Application.dependencies() {
@@ -83,5 +76,13 @@ private fun Application.dependencies() {
 
     install(Routing) {
 
+    }
+}
+
+private fun Application.routing() {
+    routing {
+        hello()
+        root(kweetDao, userDao)
+        styles()
     }
 }
