@@ -59,7 +59,7 @@ private fun Application.dependencies() {
     install(PartialContent)
     install(Locations)
     install(FreeMarker) {
-        templateLoader = ClassTemplateLoader(this::class.java.classLoader, "templates")
+        templateLoader = ClassTemplateLoader(this::class.java.classLoader, "/templates")
     }
 
     install(Sessions) {
