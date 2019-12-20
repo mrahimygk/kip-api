@@ -5,10 +5,10 @@
 
 <@layout.mainLayout title="خوش‌آمدید">
 <div class="posts">
-    <h3 class="content-subhead">Top 10</h3>
+    <h3 class="content-subhead">۱۰ تای برتر</h3>
     <@layout.kweets_list kweets=top></@layout.kweets_list>
 
-    <h3 class="content-subhead">Recent 10</h3>
+    <h3 class="content-subhead">۱۰ تای تازه</h3>
     <@layout.kweets_list kweets=latest></@layout.kweets_list>
 </div>
 </@layout.mainLayout>
