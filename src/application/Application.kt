@@ -21,6 +21,7 @@ import io.ktor.sessions.cookie
 import io.ktor.util.hex
 import org.h2.Driver
 import org.jetbrains.exposed.sql.Database
+import routing.hello
 import routing.root
 import routing.styles
 import session.KweetSession
@@ -52,6 +53,7 @@ fun Application.mainModule() {
     dependencies()
 
     routing {
+        hello()
         root(kweetDao, userDao)
         styles()
     }
