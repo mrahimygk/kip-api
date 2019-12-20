@@ -5,12 +5,17 @@ import db.dao.KweetDaoImpl
 import db.dao.UserDaoImpl
 import freemarker.cache.ClassTemplateLoader
 import io.ktor.application.Application
+import io.ktor.application.ApplicationCall
 import io.ktor.application.ApplicationStopped
 import io.ktor.application.install
 import io.ktor.features.*
 import io.ktor.freemarker.FreeMarker
 import io.ktor.gson.gson
 import io.ktor.locations.Locations
+import io.ktor.locations.locations
+import io.ktor.request.host
+import io.ktor.request.port
+import io.ktor.response.respondRedirect
 import io.ktor.routing.Routing
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
@@ -22,6 +27,7 @@ import io.ktor.util.hex
 import org.h2.Driver
 import org.jetbrains.exposed.sql.Database
 import routing.hello
+import routing.register
 import routing.root
 import routing.styles
 import session.KweetSession
@@ -84,5 +90,14 @@ private fun Application.routing() {
         hello()
         root(kweetDao, userDao)
         styles()
+        register(userDao)
     }
+}
+
+suspend fun ApplicationCall.redirect(location: Any) {
+    val host = request.host() ?: "localhost"
+    val port = request.port().let { if (it == 80) "" else ":$it" }
+    val address = "$host$port"
+
+    respondRedirect("http://$address${application.locations.href(location)}")
 }
