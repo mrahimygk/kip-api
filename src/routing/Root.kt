@@ -3,8 +3,9 @@ package routing
 import db.dao.KweetDaoImpl
 import db.dao.UserDaoImpl
 import io.ktor.application.call
+import io.ktor.freemarker.FreeMarkerContent
 import io.ktor.locations.get
-import io.ktor.response.respondText
+import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.sessions.get
 import io.ktor.sessions.sessions
@@ -20,21 +21,11 @@ fun Routing.root(kweetDao: KweetDaoImpl, userDao: UserDaoImpl) {
         val top = kweetDao.top(10).map { kweetDao.getKweet(it) }
         val latest = kweetDao.latest(10).map { kweetDao.getKweet(it) }
 
-        call.respondText(user.toString())
-//        call.respond(FreeMarkerContent())
+        call.respond(
+            FreeMarkerContent(
+                "index.ftl",
+                mapOf("top" to top, "latest" to latest, "user" to user)
+            )
+        )
     }
-//
-//    get("/html") {
-//        call.respondHtml {
-//            head {
-//                title { +"Ktor juju" }
-//            }
-//
-//            body {
-//                p {
-//                    +"hello"
-//                }
-//            }
-//        }
-//    }
 }
