@@ -30,10 +30,11 @@ fun Routing.register(userDao: UserDao) {
         val name = registration["name"] ?: return@post call.redirect(it)
         val email = registration["email"] ?: return@post call.redirect(it)
 
-        val error = Register(id, name, email)
+        val registerValidation = Register(id, name, email)
 
         when {
-            pass.length < 6 -> call.redirect(error.copy(error = "Password is shit"))
+            pass.length < 6 -> call.redirect(registerValidation.copy(error = "Password is shit"))
+            id.length < 4 -> call.redirect(registerValidation.copy(error = "4 chars plz"))
             else -> {
             }
         }
