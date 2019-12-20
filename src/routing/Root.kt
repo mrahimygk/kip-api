@@ -21,10 +21,14 @@ fun Routing.root(kweetDao: KweetDaoImpl, userDao: UserDaoImpl) {
         val top = kweetDao.top(10).map { kweetDao.getKweet(it) }
         val latest = kweetDao.latest(10).map { kweetDao.getKweet(it) }
 
+        val etagString = user?.userID + "," + top.joinToString { it.id.toString() } + latest.joinToString { it.id.toString() }
+        val etag = etagString.hashCode()
+
         call.respond(
             FreeMarkerContent(
                 "index.ftl",
-                mapOf("top" to top, "latest" to latest, "user" to user)
+                mapOf("top" to top, "latest" to latest, "user" to user),
+                etag.toString()
             )
         )
     }
