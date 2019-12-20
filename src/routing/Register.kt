@@ -34,7 +34,8 @@ fun Routing.register(userDao: UserDao) {
 
         when {
             pass.length < 6 -> call.redirect(error.copy(error = "Password is shit"))
-            else->{}
+            else -> {
+            }
         }
         call.respondText(userDao.createUser(User(id, email, name, pass)).toString())
     }
