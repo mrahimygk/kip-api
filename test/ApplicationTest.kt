@@ -2,17 +2,17 @@ package ir.mrahimygk
 
 import application.mainModule
 import io.ktor.http.*
-import io.ktor.client.features.auth.basic.*
 import kotlin.test.*
 import io.ktor.server.testing.*
+import routing.routes.helloLocationRoute
 
 class ApplicationTest {
     @Test
     fun testRoot() {
-        withTestApplication({ mainModule(testing = true) }) {
-            handleRequest(HttpMethod.Get, "/").apply {
+        withTestApplication({ mainModule() }) {
+            handleRequest(HttpMethod.Get, helloLocationRoute).apply {
                 assertEquals(HttpStatusCode.OK, response.status())
-                assertEquals("HELLO WORLD!", response.content)
+                assertEquals("HELLO WORLD", response.content)
             }
         }
     }
