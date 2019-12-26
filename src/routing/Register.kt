@@ -25,8 +25,8 @@ fun Routing.register(userDao: UserDao) {
         if (user != null) return@post call.redirect(UserPage(user.userID))
 
         val registration = call.receive<Parameters>()
-        val id = registration["userId"] ?: return@post call.redirect(it)
-        val pass = registration["pass"] ?: return@post call.redirect(it)
+        val id = registration["userID"] ?: return@post call.redirect(it)
+        val pass = registration["hash"] ?: return@post call.redirect(it)
         val name = registration["name"] ?: return@post call.redirect(it)
         val email = registration["email"] ?: return@post call.redirect(it)
 
@@ -46,7 +46,7 @@ fun Routing.register(userDao: UserDao) {
             FreeMarkerContent(
                 "register.ftl",
                 mapOf(
-                    "pageUser" to User(it.userId, it.email, it.displayName, ""),
+                    "pageUser" to User(it.userID, it.email, it.name, ""),
                     "error" to it.error
                 )
             )
