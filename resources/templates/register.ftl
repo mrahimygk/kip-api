@@ -1,16 +1,16 @@
 <#-- @ftlvariable name="error" type="java.lang.String" -->
-<#-- @ftlvariable name="pageUser" type="io.ktor.samples.kweet.model.User" -->
+<#-- @ftlvariable name="pageUser" type="pojo.User" -->
 
 <#import "template.ftl" as layout />
 
-<@layout.mainLayout title="Welcome">
+<@layout.mainLayout title="به به">
 <form class="pure-form-stacked" action="/register" method="post" enctype="application/x-www-form-urlencoded">
     <#if error??>
         <p class="error">${error}</p>
     </#if>
 
-    <label for="userId">Login
-        <input type="text" name="userId" id="userId" value="${pageUser.userId}">
+    <label for="userID">نام کاربری
+        <input type="text" name="userID" id="userID" value="${pageUser.userID}">
     </label>
 
 
@@ -20,12 +20,12 @@
 
 
     <label for="displayName">نام مستعار
-        <input type="text" name="displayName" id="displayName" value="${pageUser.displayName}">
+        <input type="text" name="name" id="name" value="${pageUser.name}">
     </label>
 
 
-    <label for="password">رمز
-        <input type="password" name="password" id="password">
+    <label for="hash">رمز
+        <input type="password" name="hash" id="hash">
     </label>
 
 
