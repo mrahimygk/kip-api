@@ -20,7 +20,7 @@
                     <ul class="nav-list">
                         <li class="nav-item"><a class="pure-button" href="/">homepage</a></li>
                         <#if user??>
-                            <li class="nav-item"><a class="pure-button" href="/user/${user.userId}">my timeline</a></li>
+                            <li class="nav-item"><a class="pure-button" href="/user/${user.userID}">my timeline</a></li>
                             <li class="nav-item"><a class="pure-button" href="/post-new">New kweet</a></li>
                             <li class="nav-item"><a class="pure-button" href="/logout">sign out
                                     [${user.name?has_content?then(user.name, user.userID)}]</a></li>

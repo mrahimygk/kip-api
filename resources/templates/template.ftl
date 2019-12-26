@@ -20,10 +20,10 @@
                 <ul class="nav-list">
                     <li class="nav-item"><a class="pure-button" href="/">خانه</a></li>
                     <#if user??>
-                        <li class="nav-item"><a class="pure-button" href="/user/${user.userId}">خط زمانی من</a></li>
+                        <li class="nav-item"><a class="pure-button" href="/user/${user.userID}">خط زمانی من</a></li>
                         <li class="nav-item"><a class="pure-button" href="/post-new">کاتوئیت جدید</a></li>
                         <li class="nav-item"><a class="pure-button" href="/logout">خروج
-                            [${user.displayName?has_content?then(user.displayName, user.userId)}]</a></li>
+                            [${user.displayName?has_content?then(user.displayName, user.userID)}]</a></li>
                     <#else>
                         <li class="nav-item"><a class="pure-button" href="/register">ثبت‌نام</a></li>
                         <li class="nav-item"><a class="pure-button" href="/login">ورود</a></li>
@@ -46,12 +46,12 @@
 </#macro>
 
 <#macro kweet_li kweet>
-<#-- @ftlvariable name="kweet" type="io.ktor.samples.kweet.model.Kweet" -->
+<#-- @ftlvariable name="kweet" type="pojo.Kweet" -->
 <section class="post">
     <header class="post-header">
         <p class="post-meta">
             <a href="/kweet/${kweet.id}">${kweet.date.toDate()?string("yyyy.MM.dd HH:mm:ss")}</a>
-            by <a href="/user/${kweet.userId}">${kweet.userId}</a></p>
+            by <a href="/user/${kweet.userID}">${kweet.userID}</a></p>
     </header>
     <div class="post-description">${kweet.text}</div>
 </section>
