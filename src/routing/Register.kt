@@ -1,6 +1,7 @@
 package routing
 
 import application.redirect
+import crypto.hash
 import db.dao.UserDao
 import io.ktor.application.call
 import io.ktor.freemarker.FreeMarkerContent
@@ -9,9 +10,9 @@ import io.ktor.locations.get
 import io.ktor.locations.post
 import io.ktor.request.receive
 import io.ktor.response.respond
-import io.ktor.response.respondText
 import io.ktor.routing.Routing
 import io.ktor.sessions.*
+import ktx.isValidUserName
 import pojo.User
 import routing.routes.Register
 import routing.routes.UserPage
@@ -19,10 +20,10 @@ import session.KweetSession
 
 fun Routing.register(userDao: UserDao) {
     post<Register> {
-        val user = call.sessions.get<KweetSession>()?.let { ks ->
+        val currentUser = call.sessions.get<KweetSession>()?.let { ks ->
             userDao.getUser(ks.userID)
         }
-        if (user != null) return@post call.redirect(UserPage(user.userID))
+        if (currentUser != null) return@post call.redirect(UserPage(currentUser.userID))
 
         val registration = call.receive<Parameters>()
         val id = registration["userID"] ?: return@post call.redirect(it)
@@ -35,10 +36,18 @@ fun Routing.register(userDao: UserDao) {
         when {
             pass.length < 6 -> call.redirect(registerValidation.copy(error = "Password is shit"))
             id.length < 4 -> call.redirect(registerValidation.copy(error = "4 chars plz"))
+            !id.isValidUserName() -> call.redirect(registerValidation.copy(error = "Not valid user name"))
+            userDao.getUser(id) != null -> call.redirect(registerValidation.copy(error = "user exists"))
+            userDao.getUser(email) != null -> call.redirect(registerValidation.copy(error = "email taken"))
             else -> {
+                val hash = hash(pass)
+                val newUser = User(id, email, name, hash)
+
+                userDao.createUser(newUser)
+                call.sessions.set(KweetSession(newUser.userID))
+                call.redirect(UserPage(newUser.userID))
             }
         }
-        call.respondText(userDao.createUser(User(id, email, name, pass)).toString())
     }
 
     get<Register> {
