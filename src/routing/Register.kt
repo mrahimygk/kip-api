@@ -19,8 +19,8 @@ import session.KweetSession
 
 fun Routing.register(userDao: UserDao) {
     post<Register> {
-        val user = call.sessions.get<KweetSession>()?.let {
-            userDao.getUser(it.userID)
+        val user = call.sessions.get<KweetSession>()?.let { ks ->
+            userDao.getUser(ks.userID)
         }
         if (user != null) return@post call.redirect(UserPage(user.userID))
 
