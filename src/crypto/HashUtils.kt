@@ -12,5 +12,3 @@ fun hash(password: String): String {
     hmac.init(hmacKey)
     return hex(hmac.doFinal(password.toByteArray(Charsets.UTF_8)))
 }
-
-val hashFunction = { s: String -> hash(s) }
