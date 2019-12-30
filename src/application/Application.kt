@@ -26,10 +26,7 @@ import io.ktor.sessions.cookie
 import io.ktor.util.hex
 import org.h2.Driver
 import org.jetbrains.exposed.sql.Database
-import routing.hello
-import routing.register
-import routing.root
-import routing.styles
+import routing.*
 import session.KweetSession
 import java.io.File
 
@@ -91,6 +88,7 @@ private fun Application.routing() {
         root(kweetDao, userDao)
         styles()
         register(userDao)
+        userPage(userDao, kweetDao)
     }
 }
 
