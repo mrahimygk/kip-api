@@ -1,7 +1,7 @@
 <#-- @ftlvariable name="pageUser" type="pojo.User" -->
 <#-- @ftlvariable name="kweets" type="java.util.List<pojo.Kweet>" -->
 
-<# import "template.ftl" as layout/>
+<#import "template.ftl" as layout />
 
 <@layout.mainLayout title="کاربر ${pageUser.name}">
 <h3>کاتوئیت‌های ایشون</h3>
