@@ -1,4 +1,4 @@
-<#-- @ftlvariable name="user" type="io.ktor.samples.kweet.model.User" -->
+<#-- @ftlvariable name="user" type="pojo.User" -->
 
 <#macro mainLayout title="خوش‌آمدید">
 <!DOCTYPE html>
@@ -23,7 +23,7 @@
                         <li class="nav-item"><a class="pure-button" href="/user/${user.userID}">خط زمانی من</a></li>
                         <li class="nav-item"><a class="pure-button" href="/post-new">کاتوئیت جدید</a></li>
                         <li class="nav-item"><a class="pure-button" href="/logout">خروج
-                            [${user.displayName?has_content?then(user.displayName, user.userID)}]</a></li>
+                            [${user.name?has_content?then(user.name, user.userID)}]</a></li>
                     <#else>
                         <li class="nav-item"><a class="pure-button" href="/register">ثبت‌نام</a></li>
                         <li class="nav-item"><a class="pure-button" href="/login">ورود</a></li>
