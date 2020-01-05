@@ -34,6 +34,7 @@ import routing.*
 import session.KweetSession
 import java.io.File
 import java.net.*
+import java.util.concurrent.TimeUnit
 
 val dir = File("build/db")
 
@@ -108,5 +109,16 @@ suspend fun ApplicationCall.redirect(location: Any) {
 
 fun ApplicationCall.securityCode(date: Long, user: User) =
     hash("$date:${user.userID}:${request.host()}:${refererHost()}")
+
+fun ApplicationCall.verifyCode(date: Long, user: User, code: String) =
+    securityCode(
+        date,
+        user
+    ) == code && (System.currentTimeMillis() - date).let {
+        it > 0 && it < TimeUnit.MILLISECONDS.convert(
+            2,
+            TimeUnit.HOURS
+        )
+    }
 
 fun ApplicationCall.refererHost() = request.header(HttpHeaders.Referrer)?.let { URI.create(it).host }
