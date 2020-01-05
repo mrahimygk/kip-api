@@ -14,8 +14,8 @@ import io.ktor.routing.Routing
 import io.ktor.sessions.*
 import ktx.isValidUserName
 import pojo.User
-import routing.routes.Register
-import routing.routes.UserPage
+import routing.routeutil.Register
+import routing.routeutil.UserPage
 import session.KweetSession
 
 fun Routing.register(userDao: UserDao) {

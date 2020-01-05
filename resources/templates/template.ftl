@@ -21,7 +21,7 @@
                     <li class="nav-item"><a class="pure-button" href="/">خانه</a></li>
                     <#if user??>
                         <li class="nav-item"><a class="pure-button" href="/user/${user.userID}">خط زمانی من</a></li>
-                        <li class="nav-item"><a class="pure-button" href="/post-new">کاتوئیت جدید</a></li>
+                        <li class="nav-item"><a class="pure-button" href="/ktweet">کاتوئیت جدید</a></li>
                         <li class="nav-item"><a class="pure-button" href="/logout">خروج
                             [${user.name?has_content?then(user.name, user.userID)}]</a></li>
                     <#else>

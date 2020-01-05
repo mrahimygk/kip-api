@@ -1,4 +1,4 @@
-package routing.routes
+package routing.routeutil
 
 import io.ktor.locations.Location
 

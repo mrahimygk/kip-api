@@ -1,6 +1,7 @@
 package application
 
 import com.mchange.v2.c3p0.ComboPooledDataSource
+import crypto.hash
 import db.dao.KweetDaoImpl
 import db.dao.UserDaoImpl
 import freemarker.cache.ClassTemplateLoader
@@ -13,6 +14,8 @@ import io.ktor.freemarker.FreeMarker
 import io.ktor.gson.gson
 import io.ktor.locations.Locations
 import io.ktor.locations.locations
+import io.ktor.request.header
+import io.ktor.http.HttpHeaders
 import io.ktor.request.host
 import io.ktor.request.port
 import io.ktor.response.respondRedirect
@@ -26,9 +29,12 @@ import io.ktor.sessions.cookie
 import io.ktor.util.hex
 import org.h2.Driver
 import org.jetbrains.exposed.sql.Database
+import pojo.User
 import routing.*
 import session.KweetSession
 import java.io.File
+import java.net.*
+import java.util.concurrent.TimeUnit
 
 val dir = File("build/db")
 
@@ -89,6 +95,7 @@ private fun Application.routing() {
         styles()
         register(userDao)
         userPage(userDao, kweetDao)
+        ktweet(userDao, kweetDao)
     }
 }
 
@@ -99,3 +106,19 @@ suspend fun ApplicationCall.redirect(location: Any) {
 
     respondRedirect("http://$address${application.locations.href(location)}")
 }
+
+fun ApplicationCall.securityCode(date: Long, user: User) =
+    hash("$date:${user.userID}:${request.host()}:${refererHost()}")
+
+fun ApplicationCall.verifyCode(date: Long, user: User, code: String) =
+    securityCode(
+        date,
+        user
+    ) == code && (System.currentTimeMillis() - date).let {
+        it > 0 && it < TimeUnit.MILLISECONDS.convert(
+            2,
+            TimeUnit.HOURS
+        )
+    }
+
+fun ApplicationCall.refererHost() = request.header(HttpHeaders.Referrer)?.let { URI.create(it).host }
