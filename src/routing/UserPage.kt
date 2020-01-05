@@ -10,7 +10,7 @@ import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.sessions.get
 import io.ktor.sessions.sessions
-import routing.routes.UserPage
+import routing.routeutil.UserPage
 import session.KweetSession
 
 fun Route.userPage(userDao: UserDao, kweetDao: KweetDao) {

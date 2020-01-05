@@ -9,7 +9,7 @@ import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.sessions.get
 import io.ktor.sessions.sessions
-import routing.routes.Root
+import routing.routeutil.Root
 import session.KweetSession
 
 fun Routing.root(kweetDao: KweetDaoImpl, userDao: UserDaoImpl) {
