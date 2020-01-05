@@ -94,6 +94,7 @@ private fun Application.routing() {
         styles()
         register(userDao)
         userPage(userDao, kweetDao)
+        ktweet(userDao, kweetDao)
     }
 }
 
@@ -105,7 +106,7 @@ suspend fun ApplicationCall.redirect(location: Any) {
     respondRedirect("http://$address${application.locations.href(location)}")
 }
 
-fun ApplicationCall.securityCode(date:Long, user: User) =
+fun ApplicationCall.securityCode(date: Long, user: User) =
     hash("$date:${user.userID}:${request.host()}:${refererHost()}")
 
 fun ApplicationCall.refererHost() = request.header(HttpHeaders.Referrer)?.let { URI.create(it).host }
