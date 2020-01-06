@@ -1,14 +1,14 @@
-<#-- @ftlvariable name="top" type="java.util.List<io.ktor.samples.kweet.model.Kweet>" -->
-<#-- @ftlvariable name="latest" type="java.util.List<io.ktor.samples.kweet.model.Kweet>" -->
+<#-- @ftlvariable name="top" type="java.util.List<pojo.Kweet>" -->
+<#-- @ftlvariable name="latest" type="java.util.List<pojo.Kweet>" -->
 
 <#import "template.ftl" as layout />
 
 <@layout.mainLayout title="خوش‌آمدید">
 <div class="posts">
     <h3 class="content-subhead">۱۰ تای برتر</h3>
-    <@layout.kweets_list kweets=top></@layout.kweets_list>
+    <@layout.ktweets_list ktweets=top></@layout.ktweets_list>
 
     <h3 class="content-subhead">۱۰ تای تازه</h3>
-    <@layout.kweets_list kweets=latest></@layout.kweets_list>
+    <@layout.ktweets_list ktweets=latest></@layout.ktweets_list>
 </div>
 </@layout.mainLayout>
