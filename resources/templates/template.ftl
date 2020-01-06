@@ -45,22 +45,22 @@
 </html>
 </#macro>
 
-<#macro kweet_li kweet>
-<#-- @ftlvariable name="kweet" type="pojo.Kweet" -->
+<#macro ktweet_li ktweet>
+<#-- @ftlvariable name="ktweet" type="pojo.Kweet" -->
 <section class="post">
     <header class="post-header">
         <p class="post-meta">
-            <a href="/kweet/${kweet.id}">${kweet.date.toDate()?string("yyyy.MM.dd HH:mm:ss")}</a>
-            by <a href="/user/${kweet.userID}">${kweet.userID}</a></p>
+            <a href="/ktweet/${ktweet.id}">${ktweet.date.toDate()?string("yyyy.MM.dd HH:mm:ss")}</a>
+            by <a href="/user/${ktweet.userID}">${ktweet.userID}</a></p>
     </header>
-    <div class="post-description">${kweet.text}</div>
+    <div class="post-description">${ktweet.content}</div>
 </section>
 </#macro>
 
-<#macro kweets_list kweets>
+<#macro ktweets_list ktweets>
 <ul>
-    <#list kweets as kweet>
-        <@kweet_li kweet=kweet></@kweet_li>
+    <#list ktweets as ktweet>
+        <@ktweet_li ktweet=ktweet></@ktweet_li>
     <#else>
         <li>هنوز کاتوئیتی نداریم :(</li>
     </#list>
