@@ -51,7 +51,7 @@
     <header class="post-header">
         <p class="post-meta">
             <a href="/ktweet/${ktweet.id}">${ktweet.date.toDate()?string("yyyy.MM.dd HH:mm:ss")}</a>
-            by <a href="/user/${ktweet.userID}">${ktweet.userID}</a></p>
+            by <a href="/user/${ktweet.userId}">${ktweet.userId}</a></p>
     </header>
     <div class="post-description">${ktweet.content}</div>
 </section>
