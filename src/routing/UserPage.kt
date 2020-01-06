@@ -22,15 +22,15 @@ fun Route.userPage(userDao: UserDao, kweetDao: KweetDao) {
         if (pageUser == null) {
             call.respond(HttpStatusCode.NotFound.description("User ${it.user} is not here :("))
         } else {
-            val kweets = kweetDao.userKweets(it.user).map { kId -> kweetDao.getKweet(kId) }
-            val etag = (user?.userID ?: "") + "_" + kweets.map {
+            val ktweets = kweetDao.userKweets(it.user).map { kId -> kweetDao.getKweet(kId) }
+            val etag = (user?.userID ?: "") + "_" + ktweets.map {
                 it.content.hashCode()
             }.hashCode().toString()
 
             call.respond(
                 FreeMarkerContent(
                     "user.ftl",
-                    mapOf("user" to user, "pageUser" to pageUser, "kweets" to kweets),
+                    mapOf("user" to user, "pageUser" to pageUser, "ktweets" to ktweets),
                     etag
                 )
             )
