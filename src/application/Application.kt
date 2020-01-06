@@ -12,10 +12,10 @@ import io.ktor.application.install
 import io.ktor.features.*
 import io.ktor.freemarker.FreeMarker
 import io.ktor.gson.gson
+import io.ktor.http.HttpHeaders
 import io.ktor.locations.Locations
 import io.ktor.locations.locations
 import io.ktor.request.header
-import io.ktor.http.HttpHeaders
 import io.ktor.request.host
 import io.ktor.request.port
 import io.ktor.response.respondRedirect
@@ -33,7 +33,7 @@ import pojo.User
 import routing.*
 import session.KweetSession
 import java.io.File
-import java.net.*
+import java.net.URI
 import java.util.concurrent.TimeUnit
 
 val dir = File("build/db")
@@ -94,13 +94,14 @@ private fun Application.routing() {
         root(kweetDao, userDao)
         styles()
         register(userDao)
+        login(userDao)
         userPage(userDao, kweetDao)
         ktweet(userDao, kweetDao)
     }
 }
 
 suspend fun ApplicationCall.redirect(location: Any) {
-    val host = request.host() ?: "localhost"
+    val host = request.host()
     val port = request.port().let { if (it == 80) "" else ":$it" }
     val address = "$host$port"
 
@@ -111,10 +112,7 @@ fun ApplicationCall.securityCode(date: Long, user: User) =
     hash("$date:${user.userID}:${request.host()}:${refererHost()}")
 
 fun ApplicationCall.verifyCode(date: Long, user: User, code: String) =
-    securityCode(
-        date,
-        user
-    ) == code && (System.currentTimeMillis() - date).let {
+    securityCode(date, user) == code && (System.currentTimeMillis() - date).let {
         it > 0 && it < TimeUnit.MILLISECONDS.convert(
             2,
             TimeUnit.HOURS
