@@ -5,7 +5,7 @@ import java.io.Serializable
 
 data class Kweet(
     val id: Int,
-    val userID: String,
+    val userId: String,
     val content: String,
     val date: DateTime,
     val replyTo: Int?
