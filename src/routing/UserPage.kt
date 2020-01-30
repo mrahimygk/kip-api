@@ -30,7 +30,7 @@ fun Route.userPage(userDao: UserDao, kweetDao: KweetDao) {
             call.respond(
                 FreeMarkerContent(
                     "user.ftl",
-                    mapOf("user" to user, "pageUser" to pageUser, "ktweets" to ktweets),
+                    mapOf("user" to user, "pageUser" to pageUser, "userKtweets" to ktweets),
                     etag
                 )
             )
