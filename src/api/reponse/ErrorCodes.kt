@@ -7,4 +7,5 @@ object ErrorCodes {
     val INVALID_PASSWORD = Pair("Invalid Password", 1003)
     val INVALID_EMAIL = Pair("Invalid Email", 1004)
     val USER_EXISTS = Pair("User exists / Email taken", 1005)
+    val INVALID_LOGIN = Pair("Invalid login info", 1006)
 }
