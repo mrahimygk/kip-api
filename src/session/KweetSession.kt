@@ -1,3 +1,3 @@
 package session
 
-data class KweetSession(val userID: String)
+data class KweetSession(val email: String)
