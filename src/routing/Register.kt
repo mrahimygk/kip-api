@@ -1,19 +1,19 @@
 package routing
 
-import application.redirect
-import com.google.gson.Gson
+import api.reponse.ErrorCodes
 import crypto.hash
 import db.dao.UserDao
 import io.ktor.application.call
-import io.ktor.http.ContentType
 import io.ktor.http.Parameters
-import io.ktor.http.content.TextContent
 import io.ktor.locations.post
 import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Routing
 import ktx.isValidEmail
+import pojo.ApiResponse
 import pojo.User
+import pojo.copy
+import pojo.toTextContent
 import routing.routeutil.Register
 
 val avatars = listOf(
@@ -37,23 +37,28 @@ val avatars = listOf(
 fun Routing.register(userDao: UserDao) {
     post<Register> {
 
+        val apiResponse = ApiResponse(ErrorCodes.SUCCESS)
         val registration = call.receive<Parameters>()
-        val pass = registration["pass"] ?: return@post call.redirect(it)
-        val email = registration["email"] ?: return@post call.redirect(it)
+        val pass = registration["pass"] ?: return@post call.respond(
+            apiResponse.copy(ErrorCodes.EMPTY_PASSWORD).toTextContent()
+        )
+        val email = registration["email"] ?: return@post call.respond(
+            apiResponse.copy(ErrorCodes.EMPTY_EMAIL).toTextContent()
+        )
 
-        val registerValidation = Register(email)
-
-        when {
-            pass.length < 8 -> call.redirect(registerValidation.copy(error = "Password is bad"))
-            !email.isValidEmail() -> call.redirect(registerValidation.copy(error = "Not valid email"))
-            userDao.getUser(email) != null -> call.redirect(registerValidation.copy(error = "user exists/email taken"))
+        val response = when {
+            pass.length < 8 -> apiResponse.copy(ErrorCodes.INVALID_PASSWORD)
+            !email.isValidEmail() -> apiResponse.copy(ErrorCodes.INVALID_EMAIL)
+            userDao.getUser(email) != null -> apiResponse.copy(ErrorCodes.USER_EXISTS)
             else -> {
                 val hash = hash(pass)
                 val newUser = User(email, avatars.random(), hash)
 
                 userDao.createUser(newUser)
-                call.respond(TextContent(Gson().toJson(newUser), ContentType.Application.Json))
+                apiResponse.copy(data = newUser)
             }
         }
+
+        call.respond(response.toTextContent())
     }
 }
