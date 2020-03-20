@@ -3,8 +3,7 @@ package pojo
 import java.io.Serializable
 
 data class User(
-    val userID: String,
     val email: String,
-    val name: String,
+    val avatar: String,
     val hash: String
 ) : Serializable
