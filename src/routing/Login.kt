@@ -26,7 +26,7 @@ fun Routing.login(userDao: UserDao) {
     post<Login> {
         val apiResponse = ApiResponse(ErrorCodes.SUCCESS)
         val post = call.receive<Parameters>()
-        val email = post["email"] ?: return@post call.respond(
+        val email = post["email"]?.trim() ?: return@post call.respond(
             apiResponse.copy(ErrorCodes.EMPTY_EMAIL).toTextContent()
         )
         val password = post["pass"] ?: return@post call.respond(

@@ -42,7 +42,7 @@ fun Routing.register(userDao: UserDao) {
         val pass = registration["pass"] ?: return@post call.respond(
             apiResponse.copy(ErrorCodes.EMPTY_PASSWORD).toTextContent()
         )
-        val email = registration["email"] ?: return@post call.respond(
+        val email = registration["email"]?.trim() ?: return@post call.respond(
             apiResponse.copy(ErrorCodes.EMPTY_EMAIL).toTextContent()
         )
 
