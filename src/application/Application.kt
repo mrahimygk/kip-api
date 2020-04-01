@@ -29,8 +29,6 @@ import org.jetbrains.exposed.sql.Database
 import routing.*
 import session.KweetSession
 import java.io.File
-import java.net.URI
-import java.util.concurrent.TimeUnit
 
 val dir = File("build/db")
 
