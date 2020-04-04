@@ -11,7 +11,7 @@ interface NoteDao : Closeable {
 
     fun getAll(userId: String) : List<NoteModel>
 
-    fun insert(noteModel: NoteModel): String
+    fun insert(noteModel: NoteModel)
 
     fun delete(noteModel: NoteModel)
 
