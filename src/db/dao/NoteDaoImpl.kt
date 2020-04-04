@@ -1,6 +1,8 @@
 package db.dao
 
-import db.entity.*
+import db.entity.LabelEntity
+import db.entity.LabelJoinNoteEntity
+import db.entity.NoteEntity
 import org.jetbrains.exposed.sql.*
 import pojo.NoteModel
 
@@ -97,7 +99,18 @@ class NoteDaoImpl(
     }
 
     override fun update(noteModel: NoteModel) {
-        TODO("Not yet implemented")
+        db.transaction {
+            NoteEntity.update({ NoteEntity.id eq noteModel.id }) {
+                it[title] = noteModel.title
+                it[content] = noteModel.content
+                it[color] = noteModel.color
+                it[isPinned] = noteModel.isPinned
+                it[createdDate] = noteModel.createdDate
+                it[modifiedDate] = noteModel.modifiedDate
+            }
+
+            //TODO: update others
+        }
     }
 
     override fun sync(notes: List<NoteModel>): Int {
