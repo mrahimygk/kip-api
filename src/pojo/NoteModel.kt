@@ -13,6 +13,7 @@ data class NoteModel(
     val voiceList: List<VoiceModel>,
     val labelList: List<LabelModel>,
     val checkboxList: List<CheckboxModel>,
+    val isPinned: Boolean,
     val createdDate: DateTime,
     val modifiedDate: DateTime
 ) : Serializable
