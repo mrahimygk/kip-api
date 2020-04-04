@@ -19,6 +19,10 @@ class VoiceDaoImpl(
         TODO("Not yet implemented")
     }
 
+    override fun insert(voiceModel: VoiceModel, noteId: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun close() {
         TODO("Not yet implemented")
     }

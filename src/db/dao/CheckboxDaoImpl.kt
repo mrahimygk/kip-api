@@ -19,6 +19,10 @@ class CheckboxDaoImpl(
         TODO("Not yet implemented")
     }
 
+    override fun insert(checkboxModel: CheckboxModel, noteId: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun close() {
         TODO("Not yet implemented")
     }

@@ -19,6 +19,10 @@ class DrawingDaoImpl(
         TODO("Not yet implemented")
     }
 
+    override fun insert(drawingModel: DrawingModel, noteId: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun close() {
         TODO("Not yet implemented")
     }
