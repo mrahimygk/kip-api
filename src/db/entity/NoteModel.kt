@@ -53,7 +53,7 @@ object VoiceModel : Table() {
 
 object LabelJoinNoteModel : Table() {
     val id = varchar("id", 128).primaryKey()
-    val labelId = integer("label_id").index()
+    val labelId = varchar("label_id", 128).index()
     val noteId = varchar("note_id", 128).index()
     val createdDate = datetime("created_date")
     val modifiedDate = datetime("modified_date")
