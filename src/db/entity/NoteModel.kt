@@ -36,7 +36,7 @@ object NoteModel : Table() {
 }
 
 object DrawingModel : Table() {
-    val id = integer("id").primaryKey().autoIncrement()
+    val id = varchar("id", 128).primaryKey()
     val noteId = varchar("note_id", 128).index()
     val path = varchar("path", 1024)
     val createdDate = datetime("created_date")
@@ -44,7 +44,7 @@ object DrawingModel : Table() {
 }
 
 object VoiceModel : Table() {
-    val id = integer("id").primaryKey().autoIncrement()
+    val id = varchar("id", 128).primaryKey()
     val noteId = varchar("note_id", 128).index()
     val path = varchar("path", 1024)
     val createdDate = datetime("created_date")
@@ -52,7 +52,7 @@ object VoiceModel : Table() {
 }
 
 object LabelJoinNoteModel : Table() {
-    val id = integer("id").primaryKey().autoIncrement()
+    val id = varchar("id", 128).primaryKey()
     val labelId = integer("label_id").index()
     val noteId = varchar("note_id", 128).index()
     val createdDate = datetime("created_date")
@@ -60,14 +60,14 @@ object LabelJoinNoteModel : Table() {
 }
 
 object LabelModel : Table() {
-    val id = integer("id").primaryKey().autoIncrement()
+    val id = varchar("id", 128).primaryKey()
     val text = varchar("text", 128)
     val createdDate = datetime("created_date")
     val modifiedDate = datetime("modified_date")
 }
 
 object CheckboxModel : Table() {
-    val id = integer("id").primaryKey().autoIncrement()
+    val id = varchar("id", 128).primaryKey()
     val noteId = varchar("note_id", 128).index()
     val text = varchar("text", 128)
     val indent = integer("indent")
