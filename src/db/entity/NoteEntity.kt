@@ -2,7 +2,7 @@ package db.entity
 
 import org.jetbrains.exposed.sql.Table
 
-object NoteModel : Table() {
+object NoteEntity : Table() {
     val id = varchar("id", 128).primaryKey()
     val userEmail = varchar("user_email", 128).index()
     val title = varchar("title", 1024)
@@ -11,22 +11,22 @@ object NoteModel : Table() {
     val isPinned = bool("is_pinned")
 
     /**
-     * ref [DrawingModel]
+     * ref [DrawingEntity]
      */
     //val drawingList = varchar("drawingList", 1024)
 
     /**
-     * ref [VoiceModel]
+     * ref [VoiceEntity]
      */
     //val voiceList = varchar("voiceList", 1024)
 
     /**
-     * ref [LabelJoinNoteModel]
+     * ref [LabelJoinNoteEntity]
      */
     //val labelList = varchar("labelList", 1024)
 
     /**
-     * ref [CheckboxModel]
+     * ref [CheckboxEntity]
      */
     //val checkboxList = varchar("checkboxList", 1024)
 
@@ -36,7 +36,7 @@ object NoteModel : Table() {
     val modifiedDate = datetime("modified_date")
 }
 
-object DrawingModel : Table() {
+object DrawingEntity : Table() {
     val id = varchar("id", 128).primaryKey()
     val noteId = varchar("note_id", 128).index()
     val path = varchar("path", 1024)
@@ -44,7 +44,7 @@ object DrawingModel : Table() {
     val modifiedDate = datetime("modified_date")
 }
 
-object VoiceModel : Table() {
+object VoiceEntity : Table() {
     val id = varchar("id", 128).primaryKey()
     val noteId = varchar("note_id", 128).index()
     val path = varchar("path", 1024)
@@ -52,7 +52,7 @@ object VoiceModel : Table() {
     val modifiedDate = datetime("modified_date")
 }
 
-object LabelJoinNoteModel : Table() {
+object LabelJoinNoteEntity : Table() {
     val id = varchar("id", 128).primaryKey()
     val labelId = varchar("label_id", 128).index()
     val noteId = varchar("note_id", 128).index()
@@ -60,14 +60,14 @@ object LabelJoinNoteModel : Table() {
     val modifiedDate = datetime("modified_date")
 }
 
-object LabelModel : Table() {
+object LabelEntity : Table() {
     val id = varchar("id", 128).primaryKey()
     val text = varchar("text", 128)
     val createdDate = datetime("created_date")
     val modifiedDate = datetime("modified_date")
 }
 
-object CheckboxModel : Table() {
+object CheckboxEntity : Table() {
     val id = varchar("id", 128).primaryKey()
     val noteId = varchar("note_id", 128).index()
     val text = varchar("text", 128)

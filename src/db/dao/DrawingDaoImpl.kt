@@ -1,6 +1,6 @@
 package db.dao
 
-import db.entity.DrawingModel
+import db.entity.DrawingEntity
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
 
@@ -26,12 +26,12 @@ class DrawingDaoImpl(
 
     override fun batchInsert(drawingList: List<pojo.DrawingModel>, noteId: String) {
         db.transaction {
-            DrawingModel.batchInsert(drawingList) { drawing ->
-                this[DrawingModel.id] = drawing.id
-                this[DrawingModel.noteId] = noteId
-                this[DrawingModel.path] = drawing.path
-                this[DrawingModel.createdDate] = drawing.createdDate
-                this[DrawingModel.modifiedDate] = drawing.modifiedDate
+            DrawingEntity.batchInsert(drawingList) { drawing ->
+                this[DrawingEntity.id] = drawing.id
+                this[DrawingEntity.noteId] = noteId
+                this[DrawingEntity.path] = drawing.path
+                this[DrawingEntity.createdDate] = drawing.createdDate
+                this[DrawingEntity.modifiedDate] = drawing.modifiedDate
             }
         }
     }

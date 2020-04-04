@@ -13,50 +13,50 @@ class NoteDaoImpl(
 
     override fun init() {
         db.transaction {
-            create(NoteModel)
+            create(NoteEntity)
         }
     }
 
     override fun get(id: String) = db.transaction {
-        val row = NoteModel.select { NoteModel.id.eq(id) }.single()
+        val row = NoteEntity.select { NoteEntity.id.eq(id) }.single()
         val labels = labelDao.get(id)
         val drawings = drawingDao.get(id)
         val voices = voiceDao.get(id)
         val checkBoxes = checkboxDao.get(id)
 
         pojo.NoteModel(
-            row[NoteModel.id],
-            row[NoteModel.userEmail],
-            row[NoteModel.title],
-            row[NoteModel.content],
-            row[NoteModel.color],
+            row[NoteEntity.id],
+            row[NoteEntity.userEmail],
+            row[NoteEntity.title],
+            row[NoteEntity.content],
+            row[NoteEntity.color],
             drawings,
             voices,
             labels,
             checkBoxes,
-            row[NoteModel.isPinned],
-            row[NoteModel.createdDate],
-            row[NoteModel.modifiedDate]
+            row[NoteEntity.isPinned],
+            row[NoteEntity.createdDate],
+            row[NoteEntity.modifiedDate]
         )
 
     }
 
     override fun delete(noteModel: pojo.NoteModel) {
         db.transaction {
-            NoteModel.deleteWhere { NoteModel.id.eq(noteModel.id) }
+            NoteEntity.deleteWhere { NoteEntity.id.eq(noteModel.id) }
         }
     }
 
     override fun getAll(userId: String) = db.transaction {
-        val tuples = NoteModel.select { NoteModel.userEmail.eq(userId) }
+        val tuples = NoteEntity.select { NoteEntity.userEmail.eq(userId) }
         tuples.map { row ->
-            get(row[NoteModel.id])
+            get(row[NoteEntity.id])
         }
     }
 
     override fun insert(noteModel: pojo.NoteModel) {
         db.transaction {
-            NoteModel.insert {
+            NoteEntity.insert {
                 it[id] = noteModel.id
                 it[userEmail] = noteModel.userEmail
                 it[title] = noteModel.title
@@ -72,41 +72,41 @@ class NoteDaoImpl(
 
             //TODO: move these to according dao
             if (noteModel.checkboxList.isNotEmpty()) {
-                CheckboxModel.batchInsert(noteModel.checkboxList) { checkbox ->
-                    this[CheckboxModel.id] = checkbox.id
-                    this[CheckboxModel.noteId] = noteModel.id
-                    this[CheckboxModel.text] = checkbox.text
-                    this[CheckboxModel.indent] = checkbox.indent
-                    this[CheckboxModel.checked] = checkbox.checked
-                    this[CheckboxModel.createdDate] = checkbox.createdDate
-                    this[CheckboxModel.modifiedDate] = checkbox.modifiedDate
+                CheckboxEntity.batchInsert(noteModel.checkboxList) { checkbox ->
+                    this[CheckboxEntity.id] = checkbox.id
+                    this[CheckboxEntity.noteId] = noteModel.id
+                    this[CheckboxEntity.text] = checkbox.text
+                    this[CheckboxEntity.indent] = checkbox.indent
+                    this[CheckboxEntity.checked] = checkbox.checked
+                    this[CheckboxEntity.createdDate] = checkbox.createdDate
+                    this[CheckboxEntity.modifiedDate] = checkbox.modifiedDate
                 }
             }
 
             if (noteModel.labelList.isNotEmpty()) {
-                LabelModel.batchInsert(noteModel.labelList) { label ->
-                    this[LabelModel.id] = label.id
-                    this[LabelModel.text] = label.text
-                    this[LabelModel.createdDate] = label.createdDate
-                    this[LabelModel.modifiedDate] = label.modifiedDate
+                LabelEntity.batchInsert(noteModel.labelList) { label ->
+                    this[LabelEntity.id] = label.id
+                    this[LabelEntity.text] = label.text
+                    this[LabelEntity.createdDate] = label.createdDate
+                    this[LabelEntity.modifiedDate] = label.modifiedDate
                 }
 
-                LabelJoinNoteModel.batchInsert(noteModel.labelList) { label ->
-                    this[LabelJoinNoteModel.id] = "${noteModel.id}${label.id}"
-                    this[LabelJoinNoteModel.labelId] = label.id
-                    this[LabelJoinNoteModel.noteId] = noteModel.id
-                    this[LabelJoinNoteModel.createdDate] = label.createdDate
-                    this[LabelJoinNoteModel.modifiedDate] = label.modifiedDate
+                LabelJoinNoteEntity.batchInsert(noteModel.labelList) { label ->
+                    this[LabelJoinNoteEntity.id] = "${noteModel.id}${label.id}"
+                    this[LabelJoinNoteEntity.labelId] = label.id
+                    this[LabelJoinNoteEntity.noteId] = noteModel.id
+                    this[LabelJoinNoteEntity.createdDate] = label.createdDate
+                    this[LabelJoinNoteEntity.modifiedDate] = label.modifiedDate
                 }
             }
 
             if (noteModel.voiceList.isNotEmpty()) {
-                VoiceModel.batchInsert(noteModel.voiceList) { voice ->
-                    this[VoiceModel.id] = voice.id
-                    this[VoiceModel.noteId] = noteModel.id
-                    this[VoiceModel.path] = voice.path
-                    this[VoiceModel.createdDate] = voice.createdDate
-                    this[VoiceModel.modifiedDate] = voice.modifiedDate
+                VoiceEntity.batchInsert(noteModel.voiceList) { voice ->
+                    this[VoiceEntity.id] = voice.id
+                    this[VoiceEntity.noteId] = noteModel.id
+                    this[VoiceEntity.path] = voice.path
+                    this[VoiceEntity.createdDate] = voice.createdDate
+                    this[VoiceEntity.modifiedDate] = voice.modifiedDate
                 }
             }
         }
