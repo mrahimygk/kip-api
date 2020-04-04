@@ -25,7 +25,7 @@ class NoteDaoImpl(
         val voices = voiceDao.get(id)
         val checkBoxes = checkboxDao.get(id)
 
-        pojo.NoteModel(
+        NoteModel(
             row[NoteEntity.id],
             row[NoteEntity.userEmail],
             row[NoteEntity.title],
@@ -42,7 +42,7 @@ class NoteDaoImpl(
 
     }
 
-    override fun delete(noteModel: pojo.NoteModel) {
+    override fun delete(noteModel: NoteModel) {
         db.transaction {
             NoteEntity.deleteWhere { NoteEntity.id.eq(noteModel.id) }
         }
@@ -55,7 +55,7 @@ class NoteDaoImpl(
         }
     }
 
-    override fun insert(noteModel: pojo.NoteModel) {
+    override fun insert(noteModel: NoteModel) {
         db.transaction {
             NoteEntity.insert {
                 it[id] = noteModel.id
@@ -92,11 +92,11 @@ class NoteDaoImpl(
         }
     }
 
-    override fun getPinned(userId: String): List<pojo.NoteModel> {
+    override fun getPinned(userId: String): List<NoteModel> {
         return getAll(userId).filter { it.isPinned }
     }
 
-    override fun update(noteModel: pojo.NoteModel) {
+    override fun update(noteModel: NoteModel) {
         TODO("Not yet implemented")
     }
 
