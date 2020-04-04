@@ -7,7 +7,7 @@ interface NoteDao : Closeable {
 
     fun init()
 
-    fun getPinned(user: String): List<NoteModel>
+    fun getPinned(userId: String): List<NoteModel>
 
     fun getAll(userId: String) : List<NoteModel>
 
