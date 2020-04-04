@@ -1,5 +1,6 @@
 package pojo
 
+import org.joda.time.DateTime
 import java.io.Serializable
 
 data class NoteModel(
@@ -12,6 +13,6 @@ data class NoteModel(
     val voiceList: List<VoiceModel>,
     val labelList: List<LabelModel>,
     val checkboxList: List<CheckboxModel>,
-    val createdDate: String,
-    val modifiedDate: String
+    val createdDate: DateTime,
+    val modifiedDate: DateTime
 ) : Serializable
