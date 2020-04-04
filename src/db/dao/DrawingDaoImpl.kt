@@ -1,8 +1,12 @@
 package db.dao
 
+import org.jetbrains.exposed.sql.Database
 import pojo.DrawingModel
 
-class DrawingDaoImpl : DrawingDao {
+class DrawingDaoImpl(
+    private val db: Database = Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver")
+
+) : DrawingDao {
     override fun init() {
         TODO("Not yet implemented")
     }
