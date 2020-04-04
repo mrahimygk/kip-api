@@ -66,9 +66,7 @@ class NoteDaoImpl(
                 it[modifiedDate] = noteModel.modifiedDate
             }
 
-            if (noteModel.drawingList.isNotEmpty()) {
-                drawingDao.batchInsert(noteModel.drawingList, noteModel.id)
-            }
+            drawingDao.batchInsert(noteModel.drawingList, noteModel.id)
 
             //TODO: move these to according dao
             if (noteModel.checkboxList.isNotEmpty()) {
