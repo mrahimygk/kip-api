@@ -68,18 +68,7 @@ class NoteDaoImpl(
 
             drawingDao.batchInsert(noteModel.drawingList, noteModel.id)
 
-            //TODO: move these to according dao
-            if (noteModel.checkboxList.isNotEmpty()) {
-                CheckboxEntity.batchInsert(noteModel.checkboxList) { checkbox ->
-                    this[CheckboxEntity.id] = checkbox.id
-                    this[CheckboxEntity.noteId] = noteModel.id
-                    this[CheckboxEntity.text] = checkbox.text
-                    this[CheckboxEntity.indent] = checkbox.indent
-                    this[CheckboxEntity.checked] = checkbox.checked
-                    this[CheckboxEntity.createdDate] = checkbox.createdDate
-                    this[CheckboxEntity.modifiedDate] = checkbox.modifiedDate
-                }
-            }
+            checkboxDao.batchInsert(noteModel.checkboxList, noteModel.id)
 
             if (noteModel.labelList.isNotEmpty()) {
                 LabelEntity.batchInsert(noteModel.labelList) { label ->
@@ -98,15 +87,7 @@ class NoteDaoImpl(
                 }
             }
 
-            if (noteModel.voiceList.isNotEmpty()) {
-                VoiceEntity.batchInsert(noteModel.voiceList) { voice ->
-                    this[VoiceEntity.id] = voice.id
-                    this[VoiceEntity.noteId] = noteModel.id
-                    this[VoiceEntity.path] = voice.path
-                    this[VoiceEntity.createdDate] = voice.createdDate
-                    this[VoiceEntity.modifiedDate] = voice.modifiedDate
-                }
-            }
+            voiceDao.batchInsert(noteModel.voiceList, noteModel.id)
         }
     }
 
