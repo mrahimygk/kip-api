@@ -1,6 +1,8 @@
 package db.dao
 
+import db.entity.CheckboxEntity
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.batchInsert
 import pojo.CheckboxModel
 
 class CheckboxDaoImpl(
@@ -23,8 +25,18 @@ class CheckboxDaoImpl(
         TODO("Not yet implemented")
     }
 
-    override fun batchInsert(checkboxModel: List<CheckboxModel>, noteId: String) {
-        TODO("Not yet implemented")
+    override fun batchInsert(checkboxList: List<CheckboxModel>, noteId: String) {
+        db.transaction {
+            CheckboxEntity.batchInsert(checkboxList) { checkbox ->
+                this[CheckboxEntity.id] = checkbox.id
+                this[CheckboxEntity.noteId] = noteId
+                this[CheckboxEntity.text] = checkbox.text
+                this[CheckboxEntity.indent] = checkbox.indent
+                this[CheckboxEntity.checked] = checkbox.checked
+                this[CheckboxEntity.createdDate] = checkbox.createdDate
+                this[CheckboxEntity.modifiedDate] = checkbox.modifiedDate
+            }
+        }
     }
 
     override fun close() {
