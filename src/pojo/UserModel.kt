@@ -2,7 +2,7 @@ package pojo
 
 import java.io.Serializable
 
-data class User(
+data class UserModel(
     val email: String,
     val avatar: String,
     val hash: String

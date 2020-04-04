@@ -1,10 +1,10 @@
 package db.dao
 
-import db.entity.Users
+import db.entity.UserEntity
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
-import pojo.User
+import pojo.UserModel
 import java.io.File
 
 class UserDaoImpl(val db: Database = Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver")) : UserDao {
@@ -17,22 +17,22 @@ class UserDaoImpl(val db: Database = Database.connect("jdbc:h2:mem:test", driver
 
     override fun init() {
         db.transaction {
-            create(Users)
+            create(UserEntity)
         }
     }
 
     override fun getUser(email: String, hash: String?) = db.transaction {
-        Users.select {
-            Users.email.eq(email)
+        UserEntity.select {
+            UserEntity.email.eq(email)
         }.mapNotNull {
-            if (hash == null || it[Users.hash] == hash)
-                User(it[Users.email], it[Users.avatar], it[Users.hash])
+            if (hash == null || it[UserEntity.hash] == hash)
+                UserModel(it[UserEntity.email], it[UserEntity.avatar], it[UserEntity.hash])
             else null
         }.singleOrNull()
     }
 
-    override fun createUser(user: User) = db.transaction {
-        Users.insert {
+    override fun createUser(user: UserModel) = db.transaction {
+        UserEntity.insert {
             it[avatar] = user.avatar
             it[email] = user.email
             it[hash] = user.hash
