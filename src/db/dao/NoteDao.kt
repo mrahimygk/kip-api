@@ -7,11 +7,11 @@ interface NoteDao : Closeable {
 
     fun init()
 
-    fun getPinned(user: String): List<Int>
+    fun getPinned(user: String): List<NoteModel>
 
-    fun getAll(user: String) : List<Int>
+    fun getAll(userId: String) : List<NoteModel>
 
-    fun insert(noteModel: NoteModel): Int
+    fun insert(noteModel: NoteModel): String
 
     fun delete(noteModel: NoteModel)
 
