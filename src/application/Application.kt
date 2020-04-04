@@ -1,8 +1,7 @@
 package application
 
 import com.mchange.v2.c3p0.ComboPooledDataSource
-import db.dao.KweetDaoImpl
-import db.dao.UserDaoImpl
+import db.dao.*
 import freemarker.cache.ClassTemplateLoader
 import io.ktor.application.Application
 import io.ktor.application.ApplicationCall
@@ -41,7 +40,11 @@ val pool = ComboPooledDataSource().apply {
 
 val db = Database.connect(pool)
 val userDao = UserDaoImpl(db)
-val kweetDao = KweetDaoImpl(db)
+val labelDao = LabelDaoImpl(db)
+val voiceDao = VoiceDaoImpl(db)
+val drawingDao = DrawingDaoImpl(db)
+val checkboxDao = CheckboxDaoImpl(db)
+val noteDao = NoteDaoImpl(labelDao, drawingDao, voiceDao, checkboxDao, db)
 
 fun main(args: Array<String>) {
     embeddedServer(Netty, 8080, module = Application::mainModule).start(wait = true)
@@ -49,7 +52,7 @@ fun main(args: Array<String>) {
 
 fun Application.mainModule() {
     userDao.init()
-    kweetDao.init()
+    noteDao.init()
     environment.monitor.subscribe(ApplicationStopped) { pool.close() }
     dependencies()
     routing()
@@ -85,12 +88,12 @@ private fun Application.dependencies() {
 private fun Application.routing() {
     routing {
         hello()
-        root(kweetDao, userDao)
+        root(noteDao, userDao)
         styles()
         register(userDao)
         login(userDao)
-        userPage(userDao, kweetDao)
-        ktweet(userDao, kweetDao)
+        userPage(userDao, noteDao)
+        ktweet(userDao, noteDao)
     }
 }
 
