@@ -2,6 +2,7 @@ package db.dao
 
 import db.entity.*
 import org.jetbrains.exposed.sql.*
+import pojo.NoteModel
 
 class NoteDaoImpl(
     private val labelDao: LabelDao,
@@ -96,6 +97,10 @@ class NoteDaoImpl(
     }
 
     override fun update(noteModel: pojo.NoteModel) {
+        TODO("Not yet implemented")
+    }
+
+    override fun sync(notes: List<NoteModel>): Int {
         TODO("Not yet implemented")
     }
 
