@@ -8,6 +8,7 @@ object NoteModel : Table() {
     val title = varchar("title", 1024)
     val content = varchar("content", 2048)
     val color = varchar("color", 10)
+    val isPinned = bool("is_pinned")
 
     /**
      * ref [DrawingModel]
