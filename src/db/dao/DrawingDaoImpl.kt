@@ -23,6 +23,10 @@ class DrawingDaoImpl(
         TODO("Not yet implemented")
     }
 
+    override fun batchInsert(drawingModel: List<DrawingModel>, noteId: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun close() {
         TODO("Not yet implemented")
     }

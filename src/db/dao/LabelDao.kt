@@ -11,4 +11,5 @@ interface LabelDao : Closeable {
     fun getAll(): List<LabelModel>
     fun get(noteId: String): List<LabelModel>
     fun insert(labelModel: LabelModel, noteId: String)
+    fun batchInsert(labelModel: List<LabelModel>, noteId: String)
 }

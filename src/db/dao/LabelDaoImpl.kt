@@ -22,6 +22,10 @@ class LabelDaoImpl(
         TODO("Not yet implemented")
     }
 
+    override fun batchInsert(labelModel: List<LabelModel>, noteId: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun close() {
         TODO("Not yet implemented")
     }

@@ -23,6 +23,10 @@ class VoiceDaoImpl(
         TODO("Not yet implemented")
     }
 
+    override fun batchInsert(voiceModel: List<VoiceModel>, noteId: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun close() {
         TODO("Not yet implemented")
     }

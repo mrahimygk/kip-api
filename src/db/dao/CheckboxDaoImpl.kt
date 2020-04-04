@@ -23,6 +23,10 @@ class CheckboxDaoImpl(
         TODO("Not yet implemented")
     }
 
+    override fun batchInsert(checkboxModel: List<CheckboxModel>, noteId: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun close() {
         TODO("Not yet implemented")
     }
