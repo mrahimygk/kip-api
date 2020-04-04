@@ -1,8 +1,11 @@
 package db.dao
 
+import org.jetbrains.exposed.sql.Database
 import pojo.LabelModel
 
-class LabelDaoImpl : LabelDao {
+class LabelDaoImpl(
+    private val db: Database = Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver")
+) : LabelDao {
     override fun init() {
         TODO("Not yet implemented")
     }
