@@ -11,7 +11,7 @@ import io.ktor.response.respond
 import io.ktor.routing.Routing
 import ktx.isValidEmail
 import pojo.ApiResponse
-import pojo.User
+import pojo.UserModel
 import pojo.copy
 import pojo.toTextContent
 import routing.routeutil.Register
@@ -52,7 +52,7 @@ fun Routing.register(userDao: UserDao) {
             userDao.getUser(email) != null -> apiResponse.copy(ErrorCodes.USER_EXISTS)
             else -> {
                 val hash = hash(pass)
-                val newUser = User(email, avatars.random(), hash)
+                val newUser = UserModel(email, avatars.random(), hash)
 
                 userDao.createUser(newUser)
                 apiResponse.copy(data = newUser)
