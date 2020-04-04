@@ -9,7 +9,7 @@ interface NoteDao : Closeable {
 
     fun getPinned(userId: String): List<NoteModel>
 
-    fun getAll(userId: String) : List<NoteModel>
+    fun getAll(userId: String): List<NoteModel>
 
     fun insert(noteModel: NoteModel)
 
@@ -18,4 +18,11 @@ interface NoteDao : Closeable {
     fun update(noteModel: NoteModel)
 
     fun get(id: String): NoteModel
+
+    /**
+     * checks for creation/modification time of the notes
+     * and inserts the missing ones, updating others.
+     * @returns the number of updates/inserts
+     */
+    fun sync(notes: List<NoteModel>): Int
 }
