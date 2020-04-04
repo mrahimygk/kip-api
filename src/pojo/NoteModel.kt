@@ -8,10 +8,10 @@ data class NoteModel(
     val title: String,
     val content: String,
     val color: String,
-    val drawingList: String,
-    val voiceList: String,
-    val labelList: String,
-    val checkboxList: String,
+    val drawingList: List<DrawingModel>,
+    val voiceList: List<VoiceModel>,
+    val labelList: List<LabelModel>,
+    val checkboxList: List<CheckboxModel>,
     val createdDate: String,
     val modifiedDate: String
 ) : Serializable
