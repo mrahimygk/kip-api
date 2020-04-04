@@ -34,6 +34,7 @@ class NoteDaoImpl(
             voices,
             labels,
             checkBoxes,
+            row[NoteModel.isPinned],
             row[NoteModel.createdDate],
             row[NoteModel.modifiedDate]
         )
@@ -66,15 +67,10 @@ class NoteDaoImpl(
             }
 
             if (noteModel.drawingList.isNotEmpty()) {
-                DrawingModel.batchInsert(noteModel.drawingList) { drawing ->
-                    this[DrawingModel.id] = drawing.id
-                    this[DrawingModel.noteId] = noteModel.id
-                    this[DrawingModel.path] = drawing.path
-                    this[DrawingModel.createdDate] = drawing.createdDate
-                    this[DrawingModel.modifiedDate] = drawing.modifiedDate
-                }
+                drawingDao.batchInsert(noteModel.drawingList, noteModel.id)
             }
 
+            //TODO: move these to according dao
             if (noteModel.checkboxList.isNotEmpty()) {
                 CheckboxModel.batchInsert(noteModel.checkboxList) { checkbox ->
                     this[CheckboxModel.id] = checkbox.id
@@ -118,6 +114,10 @@ class NoteDaoImpl(
 
     override fun getPinned(userId: String): List<pojo.NoteModel> {
         return getAll(userId).filter { it.isPinned }
+    }
+
+    override fun update(noteModel: pojo.NoteModel) {
+        TODO("Not yet implemented")
     }
 
 //    override fun top(count: Int) = db.transaction {
@@ -167,15 +167,15 @@ class NoteDaoImpl(
 ////        }.single()[NoteModel.id.count()]
 //    }
 
-    override fun createKweet(user: String, text: String, replyTo: Int?, date: DateTime) = db.transaction {
-        TODO()
-        NoteModel.insert {
-            it[NoteModel.user] = user
-            it[NoteModel.date] = date
-            it[NoteModel.replyTo] = replyTo
-            it[NoteModel.text] = text
-        }.generatedKey ?: throw IllegalStateException("No generated key returned")
-    }
+//    override fun createKweet(user: String, text: String, replyTo: Int?, date: DateTime) = db.transaction {
+//        TODO()
+//        NoteModel.insert {
+//            it[NoteModel.user] = user
+//            it[NoteModel.date] = date
+//            it[NoteModel.replyTo] = replyTo
+//            it[NoteModel.text] = text
+//        }.generatedKey ?: throw IllegalStateException("No generated key returned")
+//    }
 
 
 //    override fun userKweets(userId: String) = db.transaction {
