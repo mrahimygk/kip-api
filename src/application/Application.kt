@@ -44,7 +44,8 @@ val labelDao = LabelDaoImpl(db)
 val voiceDao = VoiceDaoImpl(db)
 val drawingDao = DrawingDaoImpl(db)
 val checkboxDao = CheckboxDaoImpl(db)
-val noteDao = NoteDaoImpl(labelDao, drawingDao, voiceDao, checkboxDao, db)
+val labelJoinNoteDao = LabelJoinNoteDaoImpl(db)
+val noteDao = NoteDaoImpl(labelDao, labelJoinNoteDao, drawingDao, voiceDao, checkboxDao, db)
 
 fun main(args: Array<String>) {
     embeddedServer(Netty, 8080, module = Application::mainModule).start(wait = true)
