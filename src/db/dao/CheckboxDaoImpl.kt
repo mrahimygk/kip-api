@@ -39,7 +39,7 @@ class CheckboxDaoImpl(
         }
     }
 
-    override fun update(checkboxModel: CheckboxModel, noteId: String) {
+    override fun update(checkboxModel: CheckboxModel) {
         TODO("Not yet implemented")
     }
 
