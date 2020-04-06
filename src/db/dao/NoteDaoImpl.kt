@@ -4,10 +4,13 @@ import db.entity.LabelEntity
 import db.entity.LabelJoinNoteEntity
 import db.entity.NoteEntity
 import org.jetbrains.exposed.sql.*
+import org.joda.time.DateTime
+import pojo.LabelJoinNoteModel
 import pojo.NoteModel
 
 class NoteDaoImpl(
     private val labelDao: LabelDao,
+    private val labelJoinNoteDao: LabelJoinNoteDao,
     private val drawingDao: DrawingDao,
     private val voiceDao: VoiceDao,
     private val checkboxDao: CheckboxDao,
@@ -22,7 +25,9 @@ class NoteDaoImpl(
 
     override fun get(id: String) = db.transaction {
         val row = NoteEntity.select { NoteEntity.id.eq(id) }.single()
-        val labels = labelDao.get(id)
+        val ljns = labelJoinNoteDao.get(id)
+        //TODO: get by sql `where id in (ids)`
+        val labels = labelDao.getAll().filter { ljns.map { e -> e.id }.contains(it.id) }
         val drawings = drawingDao.get(id)
         val voices = voiceDao.get(id)
         val checkBoxes = checkboxDao.get(id)
@@ -119,6 +124,12 @@ class NoteDaoImpl(
             val insertingLabels =
                 noteModel.labelList.filterNot { updatingLabels.map { e -> e.id }.contains(it.id) }
             labelDao.batchInsert(insertingLabels, noteModel.id)
+
+            //TODO: this maybe is handled by [labelDao]?
+            labelJoinNoteDao.batchInsert(insertingLabels.map {
+                //TODO: adding a uuid?
+                LabelJoinNoteModel("", noteModel.id, it.id, DateTime(), DateTime())
+            })
 
             val updatingVoices =
                 voiceDao.getAll().filter { noteModel.voiceList.map { e -> e.id }.contains(it.id) }
