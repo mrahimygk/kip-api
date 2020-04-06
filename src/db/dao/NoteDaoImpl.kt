@@ -109,7 +109,49 @@ class NoteDaoImpl(
                 it[modifiedDate] = noteModel.modifiedDate
             }
 
-            //TODO: update others
+            //TODO: update label (tricky!!!)
+            val updatingLabels =
+                labelDao.getAll().filter { noteModel.labelList.map { e -> e.id }.contains(it.id) }
+            updatingLabels.forEach { e ->
+                labelDao.update(e)
+            }
+
+            val insertingLabels =
+                noteModel.labelList.filterNot { updatingLabels.map { e -> e.id }.contains(it.id) }
+            labelDao.batchInsert(insertingLabels, noteModel.id)
+
+            //TODO: update voices
+            val updatingVoices =
+                voiceDao.getAll().filter { noteModel.voiceList.map { e -> e.id }.contains(it.id) }
+            updatingVoices.forEach { e ->
+                voiceDao.update(e)
+            }
+
+            val insertingVoices =
+                noteModel.voiceList.filterNot { updatingVoices.map { e -> e.id }.contains(it.id) }
+            voiceDao.batchInsert(insertingVoices, noteModel.id)
+
+            //TODO: update drawings
+            val updatingDrawings =
+                drawingDao.getAll().filter { noteModel.drawingList.map { e -> e.id }.contains(it.id) }
+            updatingDrawings.forEach { e ->
+                drawingDao.update(e)
+            }
+
+            val insertingDrawings =
+                noteModel.drawingList.filterNot { updatingDrawings.map { e -> e.id }.contains(it.id) }
+            drawingDao.batchInsert(insertingDrawings, noteModel.id)
+
+            //TODO: update checkboxes
+            val updatingCheckboxes =
+                checkboxDao.getAll().filter { noteModel.checkboxList.map { e -> e.id }.contains(it.id) }
+            updatingCheckboxes.forEach { e ->
+                checkboxDao.update(e)
+            }
+
+            val insertingCheckboxes =
+                noteModel.checkboxList.filterNot { updatingCheckboxes.map { e -> e.id }.contains(it.id) }
+            checkboxDao.batchInsert(insertingCheckboxes, noteModel.id)
         }
     }
 
