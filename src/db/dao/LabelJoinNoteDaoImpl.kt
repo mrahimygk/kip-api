@@ -22,7 +22,7 @@ class LabelJoinNoteDaoImpl(
         TODO("Not yet implemented")
     }
 
-    override fun batchInsert(labelModel: List<LabelJoinNoteModel>, noteId: String) {
+    override fun batchInsert(labelModel: List<LabelJoinNoteModel>) {
         TODO("Not yet implemented")
     }
 
