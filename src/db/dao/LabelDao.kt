@@ -1,6 +1,5 @@
 package db.dao
 
-import pojo.CheckboxModel
 import pojo.LabelModel
 import java.io.Closeable
 
