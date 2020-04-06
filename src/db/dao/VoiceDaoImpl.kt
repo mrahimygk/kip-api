@@ -37,6 +37,10 @@ class VoiceDaoImpl(
         }
     }
 
+    override fun update(voiceModel: VoiceModel) {
+        TODO("Not yet implemented")
+    }
+
     override fun close() {
         TODO("Not yet implemented")
     }
