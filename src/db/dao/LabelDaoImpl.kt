@@ -26,6 +26,10 @@ class LabelDaoImpl(
         TODO("Not yet implemented")
     }
 
+    override fun update(labelModel: LabelModel) {
+        TODO("Not yet implemented")
+    }
+
     override fun close() {
         TODO("Not yet implemented")
     }
