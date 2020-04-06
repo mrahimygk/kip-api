@@ -120,7 +120,6 @@ class NoteDaoImpl(
                 noteModel.labelList.filterNot { updatingLabels.map { e -> e.id }.contains(it.id) }
             labelDao.batchInsert(insertingLabels, noteModel.id)
 
-            //TODO: update voices
             val updatingVoices =
                 voiceDao.getAll().filter { noteModel.voiceList.map { e -> e.id }.contains(it.id) }
             updatingVoices.forEach { e ->
@@ -131,7 +130,6 @@ class NoteDaoImpl(
                 noteModel.voiceList.filterNot { updatingVoices.map { e -> e.id }.contains(it.id) }
             voiceDao.batchInsert(insertingVoices, noteModel.id)
 
-            //TODO: update drawings
             val updatingDrawings =
                 drawingDao.getAll().filter { noteModel.drawingList.map { e -> e.id }.contains(it.id) }
             updatingDrawings.forEach { e ->
@@ -142,7 +140,6 @@ class NoteDaoImpl(
                 noteModel.drawingList.filterNot { updatingDrawings.map { e -> e.id }.contains(it.id) }
             drawingDao.batchInsert(insertingDrawings, noteModel.id)
 
-            //TODO: update checkboxes
             val updatingCheckboxes =
                 checkboxDao.getAll().filter { noteModel.checkboxList.map { e -> e.id }.contains(it.id) }
             updatingCheckboxes.forEach { e ->
