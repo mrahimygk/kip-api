@@ -11,4 +11,5 @@ interface VoiceDao : Closeable {
     fun get(noteId: String): List<VoiceModel>
     fun insert(voiceModel: VoiceModel, noteId: String)
     fun batchInsert(voiceList: List<VoiceModel>, noteId: String)
+    fun update(voiceModel: VoiceModel)
 }
