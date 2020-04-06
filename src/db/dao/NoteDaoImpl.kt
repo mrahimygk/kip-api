@@ -160,6 +160,8 @@ class NoteDaoImpl(
             val insertingCheckboxes =
                 noteModel.checkboxList.filterNot { updatingCheckboxes.map { e -> e.id }.contains(it.id) }
             checkboxDao.batchInsert(insertingCheckboxes, noteModel.id)
+
+            //TODO: removing elements that are not present. eg removed voice, removed drawing..
         }
     }
 
