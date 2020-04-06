@@ -11,4 +11,5 @@ interface DrawingDao : Closeable {
     fun get(noteId: String): List<DrawingModel>
     fun insert(drawingModel: DrawingModel, noteId: String)
     fun batchInsert(drawingList: List<DrawingModel>, noteId: String)
+    fun update(drawingModel: DrawingModel)
 }

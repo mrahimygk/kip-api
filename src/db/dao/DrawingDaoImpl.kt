@@ -3,6 +3,7 @@ package db.dao
 import db.entity.DrawingEntity
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
+import pojo.DrawingModel
 
 class DrawingDaoImpl(
     private val db: Database = Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver")
@@ -34,6 +35,10 @@ class DrawingDaoImpl(
                 this[DrawingEntity.modifiedDate] = drawing.modifiedDate
             }
         }
+    }
+
+    override fun update(drawingModel: DrawingModel) {
+        TODO("Not yet implemented")
     }
 
     override fun close() {
