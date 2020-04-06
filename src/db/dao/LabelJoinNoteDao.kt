@@ -10,6 +10,6 @@ interface LabelJoinNoteDao : Closeable {
     fun getAll(): List<LabelJoinNoteModel>
     fun get(noteId: String): List<LabelJoinNoteModel>
     fun insert(labelModel: LabelJoinNoteModel, noteId: String)
-    fun batchInsert(labelModel: List<LabelJoinNoteModel>, noteId: String)
+    fun batchInsert(labelModel: List<LabelJoinNoteModel>)
     fun update(labelModel: LabelJoinNoteModel)
 }
