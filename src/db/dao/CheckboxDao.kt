@@ -11,4 +11,5 @@ interface CheckboxDao : Closeable {
     fun get(noteId: String): List<CheckboxModel>
     fun insert(checkboxModel: CheckboxModel, noteId: String)
     fun batchInsert(checkboxList: List<CheckboxModel>, noteId: String)
+    fun update(checkboxModel: CheckboxModel, noteId: String)
 }
