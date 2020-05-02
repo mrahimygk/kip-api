@@ -60,7 +60,7 @@ fun Routing.register(userDao: UserDao) {
                 val newUser = UserModel(email, avatars.random(), hash)
 
                 userDao.createUser(newUser)
-                apiResponse.copy(data = newUser)
+                apiResponse.copy(data = newUser.copy(hash = ""))
             }
         }
 
