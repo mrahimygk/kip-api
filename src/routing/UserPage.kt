@@ -1,7 +1,7 @@
 package routing
 
-import db.dao.NoteDao
-import db.dao.UserDao
+import db.dao.note.NoteDao
+import db.dao.user.UserDao
 import io.ktor.locations.get
 import io.ktor.routing.Route
 import routing.routeutil.UserPage

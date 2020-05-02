@@ -2,7 +2,7 @@ package routing
 
 import api.reponse.ErrorCodes
 import crypto.hash
-import db.dao.UserDao
+import db.dao.user.UserDao
 import io.ktor.application.call
 import io.ktor.features.UnsupportedMediaTypeException
 import io.ktor.http.Parameters

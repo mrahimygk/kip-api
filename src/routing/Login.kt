@@ -3,7 +3,7 @@ package routing
 import api.reponse.ErrorCodes
 import application.redirect
 import crypto.hash
-import db.dao.UserDao
+import db.dao.user.UserDao
 import io.ktor.application.call
 import io.ktor.http.Parameters
 import io.ktor.locations.get

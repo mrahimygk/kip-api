@@ -1,7 +1,7 @@
 package routing
 
-import db.dao.NoteDaoImpl
-import db.dao.UserDaoImpl
+import db.dao.note.NoteDaoImpl
+import db.dao.user.UserDaoImpl
 import io.ktor.application.call
 import io.ktor.http.ContentType
 import io.ktor.http.content.TextContent

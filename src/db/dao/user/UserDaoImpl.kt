@@ -1,4 +1,4 @@
-package db.dao
+package db.dao.user
 
 import db.entity.UserEntity
 import org.jetbrains.exposed.sql.Database
@@ -7,7 +7,8 @@ import org.jetbrains.exposed.sql.select
 import pojo.UserModel
 import java.io.File
 
-class UserDaoImpl(val db: Database = Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver")) : UserDao {
+class UserDaoImpl(val db: Database = Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver")) :
+    UserDao {
     constructor(dir: File) : this(
         Database.connect(
             "jdbc:h2:file:${dir.canonicalFile.absolutePath}",

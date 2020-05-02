@@ -1,4 +1,4 @@
-package db.dao
+package db.dao.note
 
 import pojo.CheckboxModel
 import java.io.Closeable

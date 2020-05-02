@@ -1,4 +1,4 @@
-package db.dao
+package db.dao.user
 
 import org.jetbrains.exposed.sql.statements.InsertStatement
 import pojo.UserModel

@@ -1,7 +1,8 @@
 package application
 
 import com.mchange.v2.c3p0.ComboPooledDataSource
-import db.dao.*
+import db.dao.note.*
+import db.dao.user.UserDaoImpl
 import freemarker.cache.ClassTemplateLoader
 import io.ktor.application.Application
 import io.ktor.application.ApplicationCall
@@ -45,7 +46,8 @@ val voiceDao = VoiceDaoImpl(db)
 val drawingDao = DrawingDaoImpl(db)
 val checkboxDao = CheckboxDaoImpl(db)
 val labelJoinNoteDao = LabelJoinNoteDaoImpl(db)
-val noteDao = NoteDaoImpl(labelDao, labelJoinNoteDao, drawingDao, voiceDao, checkboxDao, db)
+val noteDao =
+    NoteDaoImpl(labelDao, labelJoinNoteDao, drawingDao, voiceDao, checkboxDao, db)
 
 fun main(args: Array<String>) {
     embeddedServer(Netty, 8080, module = Application::mainModule).start(wait = true)

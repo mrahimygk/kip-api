@@ -1,4 +1,4 @@
-package db.dao
+package db.dao.note
 
 import db.entity.VoiceEntity
 import org.jetbrains.exposed.sql.Database

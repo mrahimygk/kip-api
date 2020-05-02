@@ -1,4 +1,4 @@
-package db.dao
+package db.dao.note
 
 import db.entity.DrawingEntity
 import org.jetbrains.exposed.sql.Database
