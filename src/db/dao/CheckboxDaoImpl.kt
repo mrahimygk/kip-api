@@ -10,7 +10,9 @@ class CheckboxDaoImpl(
 
 ) : CheckboxDao {
     override fun init() {
-        TODO("Not yet implemented")
+        db.transaction {
+            create(CheckboxEntity)
+        }
     }
 
     override fun getAll(): List<CheckboxModel> {
