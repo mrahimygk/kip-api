@@ -19,7 +19,11 @@ class CheckboxDaoImpl(
         TODO("Not yet implemented")
     }
 
-    override fun get(noteId: String): List<CheckboxModel> {
+    override fun get(checkboxId: String): CheckboxModel {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAllForNote(noteId: String): List<CheckboxModel> {
         TODO("Not yet implemented")
     }
 

@@ -19,7 +19,11 @@ class DrawingDaoImpl(
         TODO("Not yet implemented")
     }
 
-    override fun get(noteId: String): List<pojo.DrawingModel> {
+    override fun get(drawingId: String): DrawingModel {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAllForNote(noteId: String): List<DrawingModel> {
         TODO("Not yet implemented")
     }
 

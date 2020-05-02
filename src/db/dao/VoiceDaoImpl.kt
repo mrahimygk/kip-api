@@ -19,7 +19,11 @@ class VoiceDaoImpl(
         TODO("Not yet implemented")
     }
 
-    override fun get(noteId: String): List<VoiceModel> {
+    override fun get(voiceId: String): VoiceModel {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAllForNote(noteId: String): List<VoiceModel> {
         TODO("Not yet implemented")
     }
 

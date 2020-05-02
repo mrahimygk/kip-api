@@ -17,7 +17,11 @@ class LabelDaoImpl(
         TODO("Not yet implemented")
     }
 
-    override fun get(noteId: String): List<LabelModel> {
+    override fun get(labelId: String): LabelModel {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAllForNote(noteId: String): List<LabelModel> {
         TODO("Not yet implemented")
     }
 

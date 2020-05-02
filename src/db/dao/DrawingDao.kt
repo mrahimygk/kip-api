@@ -8,7 +8,8 @@ interface DrawingDao : Closeable {
     fun init()
 
     fun getAll(): List<DrawingModel>
-    fun get(noteId: String): List<DrawingModel>
+    fun get(drawingId: String): DrawingModel
+    fun getAllForNote(noteId: String): List<DrawingModel>
     fun insert(drawingModel: DrawingModel, noteId: String)
     fun batchInsert(drawingList: List<DrawingModel>, noteId: String)
     fun update(drawingModel: DrawingModel)

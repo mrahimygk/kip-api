@@ -17,7 +17,11 @@ class LabelJoinNoteDaoImpl(
         TODO("Not yet implemented")
     }
 
-    override fun get(noteId: String): List<LabelJoinNoteModel> {
+    override fun get(ljnId: String): LabelJoinNoteModel {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAllForNote(noteId: String): List<LabelJoinNoteModel> {
         TODO("Not yet implemented")
     }
 
