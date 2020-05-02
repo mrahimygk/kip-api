@@ -1,8 +1,7 @@
 package db.dao.note
 
 import db.entity.DrawingEntity
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.batchInsert
+import org.jetbrains.exposed.sql.*
 import pojo.DrawingModel
 
 class DrawingDaoImpl(
@@ -15,16 +14,24 @@ class DrawingDaoImpl(
         }
     }
 
-    override fun getAll(): List<pojo.DrawingModel> {
-        TODO("Not yet implemented")
+    override fun getAll(): List<DrawingModel> = db.transaction {
+        DrawingEntity.selectAll().map { extractRow(it) }
     }
 
-    override fun get(drawingId: String): DrawingModel {
-        TODO("Not yet implemented")
+    override fun get(id: String): DrawingModel = db.transaction {
+        extractRow(DrawingEntity.select { DrawingEntity.id.eq(id) }.single())
     }
 
-    override fun getAllForNote(noteId: String): List<DrawingModel> {
-        TODO("Not yet implemented")
+    override fun extractRow(row: ResultRow) =
+        DrawingModel(
+            row[DrawingEntity.id],
+            row[DrawingEntity.path],
+            row[DrawingEntity.createdDate],
+            row[DrawingEntity.modifiedDate]
+        )
+
+    override fun getAllForNote(noteId: String): List<DrawingModel> = db.transaction {
+        DrawingEntity.select { DrawingEntity.noteId.eq(noteId) }.map { extractRow(it) }
     }
 
     override fun insert(drawingModel: pojo.DrawingModel, noteId: String) {

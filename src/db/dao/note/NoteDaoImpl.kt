@@ -24,29 +24,17 @@ class NoteDaoImpl(
     }
 
     override fun get(id: String) = db.transaction {
-        val row = NoteEntity.select { NoteEntity.id.eq(id) }.single()
+        getFullNoteData(NoteEntity.select { NoteEntity.id.eq(id) }.single(), id)
+    }
+
+    private fun getFullNoteData(row: ResultRow, id: String) = db.transaction {
         val labelJoinNoteList = labelJoinNoteDao.getAllForNote(id)
         //TODO: get by sql `where id in (ids)`
         val labels = labelDao.getAll().filter { labelJoinNoteList.map { e -> e.id }.contains(it.id) }
         val drawings = drawingDao.getAllForNote(id)
         val voices = voiceDao.getAllForNote(id)
         val checkBoxes = checkboxDao.getAllForNote(id)
-
-        NoteModel(
-            row[NoteEntity.id],
-            row[NoteEntity.userEmail],
-            row[NoteEntity.title],
-            row[NoteEntity.content],
-            row[NoteEntity.color],
-            drawings,
-            voices,
-            labels,
-            checkBoxes,
-            row[NoteEntity.isPinned],
-            row[NoteEntity.createdDate],
-            row[NoteEntity.modifiedDate]
-        )
-
+        extractRow(row).copy(drawingList = drawings, voiceList = voices, labelList = labels, checkboxList = checkBoxes)
     }
 
     override fun delete(noteModel: NoteModel) {
@@ -56,9 +44,17 @@ class NoteDaoImpl(
     }
 
     override fun getAll(userId: String) = db.transaction {
-        val tuples = NoteEntity.select { NoteEntity.userEmail.eq(userId) }
-        tuples.map { row ->
-            get(row[NoteEntity.id])
+        NoteEntity.select { NoteEntity.userEmail.eq(userId) }
+            .map { row ->
+                val id = row[NoteEntity.id]
+                getFullNoteData(row, id)
+            }
+    }
+
+    override fun getAll() = db.transaction {
+        NoteEntity.selectAll().map { row ->
+            val id = row[NoteEntity.id]
+            getFullNoteData(row, id)
         }
     }
 
@@ -100,6 +96,7 @@ class NoteDaoImpl(
     }
 
     override fun getPinned(userId: String): List<NoteModel> {
+        //TODO: use sql where
         return getAll(userId).filter { it.isPinned }
     }
 
@@ -168,6 +165,21 @@ class NoteDaoImpl(
     override fun sync(notes: List<NoteModel>): Int {
         TODO("Not yet implemented")
     }
+
+    override fun extractRow(row: ResultRow) = NoteModel(
+        row[NoteEntity.id],
+        row[NoteEntity.userEmail],
+        row[NoteEntity.title],
+        row[NoteEntity.content],
+        row[NoteEntity.color],
+        emptyList(),
+        emptyList(),
+        emptyList(),
+        emptyList(),
+        row[NoteEntity.isPinned],
+        row[NoteEntity.createdDate],
+        row[NoteEntity.modifiedDate]
+    )
 
 //    override fun top(count: Int) = db.transaction {
 //        TODO()

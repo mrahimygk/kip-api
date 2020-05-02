@@ -1,8 +1,7 @@
 package db.dao.note
 
 import db.entity.CheckboxEntity
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.batchInsert
+import org.jetbrains.exposed.sql.*
 import pojo.CheckboxModel
 
 class CheckboxDaoImpl(
@@ -15,17 +14,29 @@ class CheckboxDaoImpl(
         }
     }
 
-    override fun getAll(): List<CheckboxModel> {
-        TODO("Not yet implemented")
+    override fun getAll(): List<CheckboxModel> = db.transaction {
+        CheckboxEntity.selectAll().map { extractRow(it) }
     }
 
-    override fun get(checkboxId: String): CheckboxModel {
-        TODO("Not yet implemented")
+    override fun get(id: String): CheckboxModel = db.transaction {
+        extractRow(CheckboxEntity.select { CheckboxEntity.id.eq(id) }.single())
     }
 
-    override fun getAllForNote(noteId: String): List<CheckboxModel> {
-        TODO("Not yet implemented")
+    override fun getAllForNote(noteId: String): List<CheckboxModel> = db.transaction {
+        CheckboxEntity.select { CheckboxEntity.noteId.eq(noteId) }
+            .map { extractRow(it) }
     }
+
+    override fun extractRow(row: ResultRow): CheckboxModel =
+        CheckboxModel(
+            row[CheckboxEntity.id],
+            row[CheckboxEntity.noteId],
+            row[CheckboxEntity.text],
+            row[CheckboxEntity.indent],
+            row[CheckboxEntity.checked],
+            row[CheckboxEntity.createdDate],
+            row[CheckboxEntity.modifiedDate]
+        )
 
     override fun insert(checkboxModel: CheckboxModel, noteId: String) {
         TODO("Not yet implemented")

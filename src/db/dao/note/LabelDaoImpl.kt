@@ -2,6 +2,9 @@ package db.dao.note
 
 import db.entity.LabelEntity
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import pojo.LabelModel
 
 class LabelDaoImpl(
@@ -13,17 +16,24 @@ class LabelDaoImpl(
         }
     }
 
-    override fun getAll(): List<LabelModel> {
+    override fun getAll(): List<LabelModel> = db.transaction {
+        LabelEntity.selectAll().map { extractRow(it) }
+    }
+
+    override fun get(id: String): LabelModel = db.transaction {
+        extractRow(LabelEntity.select { LabelEntity.id.eq(id) }.single())
+    }
+
+    override fun getAllForNote(noteId: String): List<LabelModel> = db.transaction {
         TODO("Not yet implemented")
     }
 
-    override fun get(labelId: String): LabelModel {
-        TODO("Not yet implemented")
-    }
-
-    override fun getAllForNote(noteId: String): List<LabelModel> {
-        TODO("Not yet implemented")
-    }
+    override fun extractRow(row: ResultRow) = LabelModel(
+        row[LabelEntity.id],
+        row[LabelEntity.text],
+        row[LabelEntity.createdDate],
+        row[LabelEntity.modifiedDate]
+    )
 
     override fun insert(labelModel: LabelModel, noteId: String) {
         TODO("Not yet implemented")
