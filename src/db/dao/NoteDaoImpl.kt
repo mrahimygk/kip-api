@@ -25,9 +25,9 @@ class NoteDaoImpl(
 
     override fun get(id: String) = db.transaction {
         val row = NoteEntity.select { NoteEntity.id.eq(id) }.single()
-        val ljns = labelJoinNoteDao.get(id)
+        val labelJoinNoteList = labelJoinNoteDao.get(id)
         //TODO: get by sql `where id in (ids)`
-        val labels = labelDao.getAll().filter { ljns.map { e -> e.id }.contains(it.id) }
+        val labels = labelDao.getAll().filter { labelJoinNoteList.map { e -> e.id }.contains(it.id) }
         val drawings = drawingDao.get(id)
         val voices = voiceDao.get(id)
         val checkBoxes = checkboxDao.get(id)
