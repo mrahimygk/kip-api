@@ -1,5 +1,6 @@
 package db.dao
 
+import db.entity.LabelJoinNoteEntity
 import org.jetbrains.exposed.sql.Database
 import pojo.LabelJoinNoteModel
 
@@ -7,7 +8,9 @@ class LabelJoinNoteDaoImpl(
     private val db: Database = Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver")
 ) : LabelJoinNoteDao {
     override fun init() {
-        TODO("Not yet implemented")
+        db.transaction {
+            create(LabelJoinNoteEntity)
+        }
     }
 
     override fun getAll(): List<LabelJoinNoteModel> {

@@ -10,7 +10,9 @@ class VoiceDaoImpl(
 
 ) : VoiceDao {
     override fun init() {
-        TODO("Not yet implemented")
+        db.transaction {
+            create(VoiceEntity)
+        }
     }
 
     override fun getAll(): List<VoiceModel> {

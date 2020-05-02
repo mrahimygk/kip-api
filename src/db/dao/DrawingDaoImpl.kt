@@ -10,7 +10,9 @@ class DrawingDaoImpl(
 
 ) : DrawingDao {
     override fun init() {
-        TODO("Not yet implemented")
+        db.transaction {
+            create(DrawingEntity)
+        }
     }
 
     override fun getAll(): List<pojo.DrawingModel> {
