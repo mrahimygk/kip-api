@@ -4,6 +4,7 @@ import api.reponse.ErrorCodes
 import crypto.hash
 import db.dao.UserDao
 import io.ktor.application.call
+import io.ktor.features.UnsupportedMediaTypeException
 import io.ktor.http.Parameters
 import io.ktor.locations.post
 import io.ktor.request.receive
@@ -38,7 +39,11 @@ fun Routing.register(userDao: UserDao) {
     post<Register> {
 
         val apiResponse = ApiResponse(ErrorCodes.SUCCESS)
-        val registration = call.receive<Parameters>()
+        val registration = try {
+            call.receive<Parameters>()
+        } catch (e: UnsupportedMediaTypeException) {
+            return@post call.respond(e.message.toString())
+        }
         val pass = registration["pass"] ?: return@post call.respond(
             apiResponse.copy(ErrorCodes.EMPTY_PASSWORD).toTextContent()
         )
