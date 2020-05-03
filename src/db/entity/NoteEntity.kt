@@ -4,11 +4,11 @@ import org.jetbrains.exposed.sql.Table
 
 object NoteEntity : Table() {
     val id = varchar("id", 128).primaryKey()
-    val userEmail = varchar("user_email", 128).index()
+    val email = varchar("email", 128).index()
     val title = varchar("title", 1024)
     val content = varchar("content", 2048)
     val color = varchar("color", 10)
-    val isPinned = bool("is_pinned")
+    val pinned = bool("pinned").default(false)
 
     /**
      * ref [DrawingEntity]
@@ -32,6 +32,6 @@ object NoteEntity : Table() {
 
     //    val replyTo = integer("reply_to").index().nullable()
 //    val directReplyTo = integer("direct_reply_to").index().nullable()
-    val createdDate = datetime("created_date")
-    val modifiedDate = datetime("modified_date")
+    val createdDate = datetime("created")
+    val modifiedDate = datetime("modified")
 }
