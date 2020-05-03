@@ -10,8 +10,9 @@ import io.ktor.response.respond
 import io.ktor.routing.Routing
 import routing.routeutil.Root
 
-fun Routing.root(kweetDao: NoteDaoImpl, userDao: UserDaoImpl) {
+fun Routing.root(noteDao: NoteDaoImpl, userDao: UserDaoImpl) {
     get<Root> {
-        call.respond(TextContent("""{"message":"hello world"}""", ContentType.Application.Json))
+//        call.respond(TextContent("""{"message":"hello world"}""", ContentType.Application.Json))
+        call.respond(TextContent(noteDao.getAll().toString(), ContentType.Application.Json))
     }
 }
