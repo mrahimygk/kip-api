@@ -29,6 +29,7 @@ import org.jetbrains.exposed.sql.Database
 import routing.*
 import session.KweetSession
 import java.io.File
+import java.text.DateFormat
 
 val dir = File("build/db")
 
@@ -56,6 +57,11 @@ fun main(args: Array<String>) {
 fun Application.mainModule() {
     userDao.init()
     noteDao.init()
+    labelDao.init()
+    voiceDao.init()
+    drawingDao.init()
+    checkboxDao.init()
+    labelJoinNoteDao.init()
     environment.monitor.subscribe(ApplicationStopped) { pool.close() }
     dependencies()
     routing()
@@ -79,7 +85,8 @@ private fun Application.dependencies() {
 
     install(ContentNegotiation) {
         gson {
-
+            setDateFormat(DateFormat.LONG)
+            setPrettyPrinting()
         }
     }
 
@@ -96,7 +103,7 @@ private fun Application.routing() {
         register(userDao)
         login(userDao)
         userPage(userDao, noteDao)
-        ktweet(userDao, noteDao)
+        note(userDao, noteDao)
     }
 }
 
