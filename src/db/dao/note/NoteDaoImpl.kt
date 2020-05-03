@@ -34,7 +34,7 @@ class NoteDaoImpl(
         val drawings = drawingDao.getAllForNote(id)
         val voices = voiceDao.getAllForNote(id)
         val checkBoxes = checkboxDao.getAllForNote(id)
-        extractRow(row).copy(drawingList = drawings, voiceList = voices, labelList = labels, checkboxList = checkBoxes)
+        extractRow(row).copy(drawings = drawings, voices = voices, labels = labels, checkboxes = checkBoxes)
     }
 
     override fun delete(noteModel: NoteModel) {
@@ -44,7 +44,7 @@ class NoteDaoImpl(
     }
 
     override fun getAll(userId: String) = db.transaction {
-        NoteEntity.select { NoteEntity.userEmail.eq(userId) }
+        NoteEntity.select { NoteEntity.email.eq(userId) }
             .map { row ->
                 val id = row[NoteEntity.id]
                 getFullNoteData(row, id)
@@ -62,27 +62,27 @@ class NoteDaoImpl(
         db.transaction {
             NoteEntity.insert {
                 it[id] = noteModel.id
-                it[userEmail] = noteModel.userEmail
+                it[email] = noteModel.email
                 it[title] = noteModel.title
                 it[content] = noteModel.content
                 it[color] = noteModel.color
-                it[createdDate] = noteModel.createdDate
-                it[modifiedDate] = noteModel.modifiedDate
+                it[createdDate] = DateTime(noteModel.created)
+                it[modifiedDate] = DateTime(noteModel.modified)
             }
 
-            drawingDao.batchInsert(noteModel.drawingList, noteModel.id)
+            drawingDao.batchInsert(noteModel.drawings, noteModel.id)
 
-            checkboxDao.batchInsert(noteModel.checkboxList, noteModel.id)
+            checkboxDao.batchInsert(noteModel.checkboxes, noteModel.id)
 
-            if (noteModel.labelList.isNotEmpty()) {
-                LabelEntity.batchInsert(noteModel.labelList) { label ->
+            if (noteModel.labels.isNotEmpty()) {
+                LabelEntity.batchInsert(noteModel.labels) { label ->
                     this[LabelEntity.id] = label.id
                     this[LabelEntity.text] = label.text
                     this[LabelEntity.createdDate] = label.createdDate
                     this[LabelEntity.modifiedDate] = label.modifiedDate
                 }
 
-                LabelJoinNoteEntity.batchInsert(noteModel.labelList) { label ->
+                LabelJoinNoteEntity.batchInsert(noteModel.labels) { label ->
                     this[LabelJoinNoteEntity.id] = "${noteModel.id}${label.id}"
                     this[LabelJoinNoteEntity.labelId] = label.id
                     this[LabelJoinNoteEntity.noteId] = noteModel.id
@@ -91,13 +91,13 @@ class NoteDaoImpl(
                 }
             }
 
-            voiceDao.batchInsert(noteModel.voiceList, noteModel.id)
+            voiceDao.batchInsert(noteModel.voices, noteModel.id)
         }
     }
 
     override fun getPinned(userId: String): List<NoteModel> {
         //TODO: use sql where
-        return getAll(userId).filter { it.isPinned }
+        return getAll(userId).filter { it.pinned }
     }
 
     override fun update(noteModel: NoteModel) {
@@ -106,20 +106,20 @@ class NoteDaoImpl(
                 it[title] = noteModel.title
                 it[content] = noteModel.content
                 it[color] = noteModel.color
-                it[isPinned] = noteModel.isPinned
-                it[createdDate] = noteModel.createdDate
-                it[modifiedDate] = noteModel.modifiedDate
+                it[pinned] = noteModel.pinned
+                it[createdDate] = DateTime(noteModel.created)
+                it[modifiedDate] = DateTime(noteModel.modified)
             }
 
             //TODO: update label (tricky!!!)
             val updatingLabels =
-                labelDao.getAll().filter { noteModel.labelList.map { e -> e.id }.contains(it.id) }
+                labelDao.getAll().filter { noteModel.labels.map { e -> e.id }.contains(it.id) }
             updatingLabels.forEach { e ->
                 labelDao.update(e)
             }
 
             val insertingLabels =
-                noteModel.labelList.filterNot { updatingLabels.map { e -> e.id }.contains(it.id) }
+                noteModel.labels.filterNot { updatingLabels.map { e -> e.id }.contains(it.id) }
             labelDao.batchInsert(insertingLabels, noteModel.id)
 
             //TODO: this maybe is handled by [labelDao]?
@@ -129,33 +129,33 @@ class NoteDaoImpl(
             })
 
             val updatingVoices =
-                voiceDao.getAll().filter { noteModel.voiceList.map { e -> e.id }.contains(it.id) }
+                voiceDao.getAll().filter { noteModel.voices.map { e -> e.id }.contains(it.id) }
             updatingVoices.forEach { e ->
                 voiceDao.update(e)
             }
 
             val insertingVoices =
-                noteModel.voiceList.filterNot { updatingVoices.map { e -> e.id }.contains(it.id) }
+                noteModel.voices.filterNot { updatingVoices.map { e -> e.id }.contains(it.id) }
             voiceDao.batchInsert(insertingVoices, noteModel.id)
 
             val updatingDrawings =
-                drawingDao.getAll().filter { noteModel.drawingList.map { e -> e.id }.contains(it.id) }
+                drawingDao.getAll().filter { noteModel.drawings.map { e -> e.id }.contains(it.id) }
             updatingDrawings.forEach { e ->
                 drawingDao.update(e)
             }
 
             val insertingDrawings =
-                noteModel.drawingList.filterNot { updatingDrawings.map { e -> e.id }.contains(it.id) }
+                noteModel.drawings.filterNot { updatingDrawings.map { e -> e.id }.contains(it.id) }
             drawingDao.batchInsert(insertingDrawings, noteModel.id)
 
             val updatingCheckboxes =
-                checkboxDao.getAll().filter { noteModel.checkboxList.map { e -> e.id }.contains(it.id) }
+                checkboxDao.getAll().filter { noteModel.checkboxes.map { e -> e.id }.contains(it.id) }
             updatingCheckboxes.forEach { e ->
                 checkboxDao.update(e)
             }
 
             val insertingCheckboxes =
-                noteModel.checkboxList.filterNot { updatingCheckboxes.map { e -> e.id }.contains(it.id) }
+                noteModel.checkboxes.filterNot { updatingCheckboxes.map { e -> e.id }.contains(it.id) }
             checkboxDao.batchInsert(insertingCheckboxes, noteModel.id)
 
             //TODO: removing elements that are not present. eg removed voice, removed drawing..
@@ -168,7 +168,7 @@ class NoteDaoImpl(
 
     override fun extractRow(row: ResultRow) = NoteModel(
         row[NoteEntity.id],
-        row[NoteEntity.userEmail],
+        row[NoteEntity.email],
         row[NoteEntity.title],
         row[NoteEntity.content],
         row[NoteEntity.color],
@@ -176,9 +176,9 @@ class NoteDaoImpl(
         emptyList(),
         emptyList(),
         emptyList(),
-        row[NoteEntity.isPinned],
-        row[NoteEntity.createdDate],
-        row[NoteEntity.modifiedDate]
+        row[NoteEntity.pinned],
+        row[NoteEntity.createdDate].toString(),
+        row[NoteEntity.modifiedDate].toString()
     )
 
 //    override fun top(count: Int) = db.transaction {
