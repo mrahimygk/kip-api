@@ -6,6 +6,6 @@ import java.io.Serializable
 data class LabelModel(
     val id: String,
     val text: String,
-    val createdDate: DateTime,
-    val modifiedDate: DateTime
+    val created: String,
+    val modified: String
 ) : Serializable

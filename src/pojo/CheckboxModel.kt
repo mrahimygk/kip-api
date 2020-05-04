@@ -9,6 +9,6 @@ data class CheckboxModel(
    val text : String,
    val indent : Int,
    val checked : Boolean,
-   val createdDate : DateTime,
-   val modifiedDate : DateTime
+   val created : String,
+   val modified : String
 ) : Serializable

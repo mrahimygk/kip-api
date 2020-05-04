@@ -6,6 +6,6 @@ import java.io.Serializable
 data class VoiceModel(
     val id: String,
     val path: String,
-    val createdDate: DateTime,
-    val modifiedDate: DateTime
+    val created: String,
+    val modified: String
 ) : Serializable
