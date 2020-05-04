@@ -2,6 +2,7 @@ package db.dao.note
 
 import db.entity.DrawingEntity
 import org.jetbrains.exposed.sql.*
+import org.joda.time.DateTime
 import pojo.DrawingModel
 
 class DrawingDaoImpl(
@@ -26,12 +27,12 @@ class DrawingDaoImpl(
         DrawingModel(
             row[DrawingEntity.id],
             row[DrawingEntity.path],
-            row[DrawingEntity.createdDate],
-            row[DrawingEntity.modifiedDate]
+            row[DrawingEntity.created].toString(),
+            row[DrawingEntity.modified].toString()
         )
 
     override fun getAllForNote(noteId: String): List<DrawingModel> = db.transaction {
-        DrawingEntity.select { DrawingEntity.noteId.eq(noteId) }.map { extractRow(it) }
+        DrawingEntity.select { DrawingEntity.noteid.eq(noteId) }.map { extractRow(it) }
     }
 
     override fun insert(drawingModel: pojo.DrawingModel, noteId: String) {
@@ -42,10 +43,10 @@ class DrawingDaoImpl(
         db.transaction {
             DrawingEntity.batchInsert(drawingList) { drawing ->
                 this[DrawingEntity.id] = drawing.id
-                this[DrawingEntity.noteId] = noteId
+                this[DrawingEntity.noteid] = noteId
                 this[DrawingEntity.path] = drawing.path
-                this[DrawingEntity.createdDate] = drawing.createdDate
-                this[DrawingEntity.modifiedDate] = drawing.modifiedDate
+                this[DrawingEntity.created] = DateTime(drawing.created)
+                this[DrawingEntity.modified] = DateTime(drawing.modified)
             }
         }
     }

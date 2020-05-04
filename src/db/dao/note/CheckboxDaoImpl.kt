@@ -2,6 +2,7 @@ package db.dao.note
 
 import db.entity.CheckboxEntity
 import org.jetbrains.exposed.sql.*
+import org.joda.time.DateTime
 import pojo.CheckboxModel
 
 class CheckboxDaoImpl(
@@ -23,19 +24,19 @@ class CheckboxDaoImpl(
     }
 
     override fun getAllForNote(noteId: String): List<CheckboxModel> = db.transaction {
-        CheckboxEntity.select { CheckboxEntity.noteId.eq(noteId) }
+        CheckboxEntity.select { CheckboxEntity.noteid.eq(noteId) }
             .map { extractRow(it) }
     }
 
     override fun extractRow(row: ResultRow): CheckboxModel =
         CheckboxModel(
             row[CheckboxEntity.id],
-            row[CheckboxEntity.noteId],
+            row[CheckboxEntity.noteid],
             row[CheckboxEntity.text],
             row[CheckboxEntity.indent],
             row[CheckboxEntity.checked],
-            row[CheckboxEntity.createdDate],
-            row[CheckboxEntity.modifiedDate]
+            row[CheckboxEntity.created].toString(),
+            row[CheckboxEntity.modified].toString()
         )
 
     override fun insert(checkboxModel: CheckboxModel, noteId: String) {
@@ -46,12 +47,12 @@ class CheckboxDaoImpl(
         db.transaction {
             CheckboxEntity.batchInsert(checkboxList) { checkbox ->
                 this[CheckboxEntity.id] = checkbox.id
-                this[CheckboxEntity.noteId] = noteId
+                this[CheckboxEntity.noteid] = noteId
                 this[CheckboxEntity.text] = checkbox.text
                 this[CheckboxEntity.indent] = checkbox.indent
                 this[CheckboxEntity.checked] = checkbox.checked
-                this[CheckboxEntity.createdDate] = checkbox.createdDate
-                this[CheckboxEntity.modifiedDate] = checkbox.modifiedDate
+                this[CheckboxEntity.created] = DateTime(checkbox.created)
+                this[CheckboxEntity.modified] = DateTime(checkbox.modified)
             }
         }
     }

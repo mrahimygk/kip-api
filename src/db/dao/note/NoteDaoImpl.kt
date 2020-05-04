@@ -66,8 +66,8 @@ class NoteDaoImpl(
                 it[title] = noteModel.title
                 it[content] = noteModel.content
                 it[color] = noteModel.color
-                it[createdDate] = DateTime(noteModel.created)
-                it[modifiedDate] = DateTime(noteModel.modified)
+                it[created] = DateTime(noteModel.created)
+                it[modified] = DateTime(noteModel.modified)
             }
 
             drawingDao.batchInsert(noteModel.drawings, noteModel.id)
@@ -78,16 +78,16 @@ class NoteDaoImpl(
                 LabelEntity.batchInsert(noteModel.labels) { label ->
                     this[LabelEntity.id] = label.id
                     this[LabelEntity.text] = label.text
-                    this[LabelEntity.createdDate] = label.createdDate
-                    this[LabelEntity.modifiedDate] = label.modifiedDate
+                    this[LabelEntity.created] = DateTime(label.created)
+                    this[LabelEntity.modified] = DateTime(label.modified)
                 }
 
                 LabelJoinNoteEntity.batchInsert(noteModel.labels) { label ->
                     this[LabelJoinNoteEntity.id] = "${noteModel.id}${label.id}"
-                    this[LabelJoinNoteEntity.labelId] = label.id
-                    this[LabelJoinNoteEntity.noteId] = noteModel.id
-                    this[LabelJoinNoteEntity.createdDate] = label.createdDate
-                    this[LabelJoinNoteEntity.modifiedDate] = label.modifiedDate
+                    this[LabelJoinNoteEntity.labelid] = label.id
+                    this[LabelJoinNoteEntity.noteid] = noteModel.id
+                    this[LabelJoinNoteEntity.created] = DateTime(label.created)
+                    this[LabelJoinNoteEntity.modified] = DateTime(label.modified)
                 }
             }
 
@@ -107,8 +107,8 @@ class NoteDaoImpl(
                 it[content] = noteModel.content
                 it[color] = noteModel.color
                 it[pinned] = noteModel.pinned
-                it[createdDate] = DateTime(noteModel.created)
-                it[modifiedDate] = DateTime(noteModel.modified)
+                it[created] = DateTime(noteModel.created)
+                it[modified] = DateTime(noteModel.modified)
             }
 
             //TODO: update label (tricky!!!)
@@ -125,7 +125,7 @@ class NoteDaoImpl(
             //TODO: this maybe is handled by [labelDao]?
             labelJoinNoteDao.batchInsert(insertingLabels.map {
                 //TODO: adding a uuid?
-                LabelJoinNoteModel("", noteModel.id, it.id, DateTime(), DateTime())
+                LabelJoinNoteModel("", noteModel.id, it.id, DateTime().toString(), DateTime().toString())
             })
 
             val updatingVoices =
@@ -177,8 +177,8 @@ class NoteDaoImpl(
         emptyList(),
         emptyList(),
         row[NoteEntity.pinned],
-        row[NoteEntity.createdDate].toString(),
-        row[NoteEntity.modifiedDate].toString()
+        row[NoteEntity.created].toString(),
+        row[NoteEntity.modified].toString()
     )
 
 //    override fun top(count: Int) = db.transaction {

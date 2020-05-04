@@ -26,15 +26,15 @@ class LabelJoinNoteDaoImpl(
     }
 
     override fun getAllForNote(noteId: String): List<LabelJoinNoteModel> = db.transaction {
-        LabelJoinNoteEntity.select { LabelJoinNoteEntity.noteId.eq(noteId) }.map { extractRow(it) }
+        LabelJoinNoteEntity.select { LabelJoinNoteEntity.noteid.eq(noteId) }.map { extractRow(it) }
     }
 
     override fun extractRow(row: ResultRow) = LabelJoinNoteModel(
         row[LabelJoinNoteEntity.id],
-        row[LabelJoinNoteEntity.noteId],
-        row[LabelJoinNoteEntity.labelId],
-        row[LabelJoinNoteEntity.createdDate],
-        row[LabelJoinNoteEntity.modifiedDate]
+        row[LabelJoinNoteEntity.noteid],
+        row[LabelJoinNoteEntity.labelid],
+        row[LabelJoinNoteEntity.created].toString(),
+        row[LabelJoinNoteEntity.modified].toString()
     )
 
     override fun insert(labelModel: LabelJoinNoteModel, noteId: String) {

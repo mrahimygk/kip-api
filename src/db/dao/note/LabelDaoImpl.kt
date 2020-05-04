@@ -31,8 +31,8 @@ class LabelDaoImpl(
     override fun extractRow(row: ResultRow) = LabelModel(
         row[LabelEntity.id],
         row[LabelEntity.text],
-        row[LabelEntity.createdDate],
-        row[LabelEntity.modifiedDate]
+        row[LabelEntity.created].toString(),
+        row[LabelEntity.modified].toString()
     )
 
     override fun insert(labelModel: LabelModel, noteId: String) {

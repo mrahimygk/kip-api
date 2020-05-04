@@ -2,6 +2,7 @@ package db.dao.note
 
 import db.entity.VoiceEntity
 import org.jetbrains.exposed.sql.*
+import org.joda.time.DateTime
 import pojo.VoiceModel
 
 class VoiceDaoImpl(
@@ -23,14 +24,14 @@ class VoiceDaoImpl(
     }
 
     override fun getAllForNote(noteId: String): List<VoiceModel> = db.transaction {
-        VoiceEntity.select { VoiceEntity.noteId.eq(noteId) }.map { extractRow(it) }
+        VoiceEntity.select { VoiceEntity.noteid.eq(noteId) }.map { extractRow(it) }
     }
 
     override fun extractRow(row: ResultRow) = VoiceModel(
         row[VoiceEntity.id],
         row[VoiceEntity.path],
-        row[VoiceEntity.createdDate],
-        row[VoiceEntity.modifiedDate]
+        row[VoiceEntity.created].toString(),
+        row[VoiceEntity.modified].toString()
     )
 
     override fun insert(voiceModel: VoiceModel, noteId: String) {
@@ -41,10 +42,10 @@ class VoiceDaoImpl(
         db.transaction {
             VoiceEntity.batchInsert(voiceList) { voice ->
                 this[VoiceEntity.id] = voice.id
-                this[VoiceEntity.noteId] = noteId
+                this[VoiceEntity.noteid] = noteId
                 this[VoiceEntity.path] = voice.path
-                this[VoiceEntity.createdDate] = voice.createdDate
-                this[VoiceEntity.modifiedDate] = voice.modifiedDate
+                this[VoiceEntity.created] = DateTime(voice.created)
+                this[VoiceEntity.modified] = DateTime(voice.modified)
             }
         }
     }
