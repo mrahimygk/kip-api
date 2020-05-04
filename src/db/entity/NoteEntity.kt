@@ -30,8 +30,6 @@ object NoteEntity : Table() {
      */
     //val checkboxList = varchar("checkboxList", 1024)
 
-    //    val replyTo = integer("reply_to").index().nullable()
-//    val directReplyTo = integer("direct_reply_to").index().nullable()
-    val createdDate = datetime("created")
-    val modifiedDate = datetime("modified")
+    val created = datetime("created")
+    val modified = datetime("modified")
 }
