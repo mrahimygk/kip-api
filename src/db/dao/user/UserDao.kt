@@ -9,6 +9,7 @@ interface UserDao : Closeable {
     fun init()
 
     fun getUser(email: String, hash: String? = null): UserModel?
+    fun getUserByEmail(email: String): UserModel?
 
     fun createUser(user: UserModel): InsertStatement
 

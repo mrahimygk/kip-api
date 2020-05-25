@@ -27,8 +27,28 @@ class UserDaoImpl(val db: Database = Database.connect("jdbc:h2:mem:test", driver
             UserEntity.email.eq(email)
         }.mapNotNull {
             if (hash == null || it[UserEntity.hash] == hash)
-                UserModel(it[UserEntity.email], it[UserEntity.avatar], it[UserEntity.hash])
+                UserModel(
+                    it[UserEntity.email],
+                    it[UserEntity.avatar],
+                    it[UserEntity.hash],
+                    it[UserEntity.token],
+                    it[UserEntity.refreshtoken]
+                )
             else null
+        }.singleOrNull()
+    }
+
+    override fun getUserByEmail(email: String) = db.transaction {
+        UserEntity.select {
+            UserEntity.email.eq(email)
+        }.mapNotNull {
+            UserModel(
+                it[UserEntity.email],
+                it[UserEntity.avatar],
+                it[UserEntity.hash],
+                it[UserEntity.token],
+                it[UserEntity.refreshtoken]
+            )
         }.singleOrNull()
     }
 
@@ -37,6 +57,8 @@ class UserDaoImpl(val db: Database = Database.connect("jdbc:h2:mem:test", driver
             it[avatar] = user.avatar
             it[email] = user.email
             it[hash] = user.hash
+            it[token] = user.token
+            it[refreshtoken] = user.refreshToken
         }
     }
 

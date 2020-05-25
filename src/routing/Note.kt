@@ -7,7 +7,6 @@ import io.ktor.content.TextContent
 import io.ktor.http.ContentType
 import io.ktor.locations.get
 import io.ktor.locations.post
-import io.ktor.request.contentType
 import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Routing
