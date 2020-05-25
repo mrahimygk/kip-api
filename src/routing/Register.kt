@@ -1,6 +1,7 @@
 package routing
 
 import api.reponse.ErrorCodes
+import application.JwtConfig
 import crypto.hash
 import db.dao.user.UserDao
 import io.ktor.application.call
@@ -57,10 +58,15 @@ fun Routing.register(userDao: UserDao) {
             userDao.getUser(email) != null -> apiResponse.copy(ErrorCodes.USER_EXISTS)
             else -> {
                 val hash = hash(pass)
-                val newUser = UserModel(email, avatars.random(), hash)
-
-                userDao.createUser(newUser)
-                apiResponse.copy(data = newUser.copy(hash = ""))
+                val newUser = UserModel(email, avatars.random(), hash, null, null)
+                val token = JwtConfig.makeToken(newUser)
+                val refreshToken = JwtConfig.makeToken(newUser)
+                val insertingUser = newUser.copy(
+                    token = token,
+                    refreshToken = refreshToken
+                )
+                userDao.createUser(insertingUser)
+                apiResponse.copy(data = insertingUser.copy(hash = ""))
             }
         }
 
