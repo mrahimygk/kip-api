@@ -1,5 +1,6 @@
 package routing
 
+import com.google.gson.Gson
 import db.dao.note.NoteDaoImpl
 import db.dao.user.UserDaoImpl
 import io.ktor.application.call
@@ -13,6 +14,6 @@ import routing.routeutil.Root
 fun Routing.root(noteDao: NoteDaoImpl, userDao: UserDaoImpl) {
     get<Root> {
 //        call.respond(TextContent("""{"message":"hello world"}""", ContentType.Application.Json))
-        call.respond(TextContent(noteDao.getAll().toString(), ContentType.Application.Json))
+        call.respond(TextContent(Gson().toJson(noteDao.getAll()), ContentType.Application.Json))
     }
 }
