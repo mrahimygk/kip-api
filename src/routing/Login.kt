@@ -11,8 +11,6 @@ import io.ktor.locations.post
 import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Routing
-import io.ktor.sessions.clear
-import io.ktor.sessions.sessions
 import ktx.isValidEmail
 import pojo.ApiResponse
 import pojo.copy
@@ -20,7 +18,6 @@ import pojo.toTextContent
 import routing.routeutil.Login
 import routing.routeutil.Logout
 import routing.routeutil.Root
-import session.KweetSession
 
 fun Routing.login(userDao: UserDao) {
     post<Login> {
@@ -40,14 +37,13 @@ fun Routing.login(userDao: UserDao) {
                 val data = userDao.getUser(email, hash(password))
                 if (data == null)
                     apiResponse.copy(ErrorCodes.INVALID_LOGIN)
-                else apiResponse.copy(data = data)
+                else apiResponse.copy(data = data.copy(hash = ""))
             }
         }
         call.respond(response.toTextContent())
     }
 
     get<Logout> {
-        call.sessions.clear<KweetSession>()
         call.redirect(Root())
     }
 }
