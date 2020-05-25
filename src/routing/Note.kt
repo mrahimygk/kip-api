@@ -19,8 +19,6 @@ fun Routing.note(userDao: UserDao, noteDao: NoteDao) {
 
     post<NewNote> {
 //        call.respond(TextContent("""{"TODO":"add new note , get user id"}""", ContentType.Application.Json))
-        val contentType: ContentType = call.request.contentType() // Parsed Content-Tpe
-        println(contentType)
         val note = call.receive<NoteModel>()
 //        call.respond(TextContent("""{"TODO":"add new note , ${post["date"]}"}""", ContentType.Application.Json))
 //        call.respond(TextContent(note.toString(), ContentType.Application.Json))
