@@ -56,7 +56,7 @@ fun Routing.note(userDao: UserDao, noteDao: NoteDao) {
     }
 
     get<ViewNote> {
-        call.respond(TextContent("""{"TODO":"show note by id"}""", ContentType.Application.Json))
+        call.respond(TextContent(noteDao.get(it.id.toString()).toString(), ContentType.Application.Json))
 //        val user = call.sessions.get<KweetSession>()?.let { userDao.getUser(it.userID, null) }
 //        val date = System.currentTimeMillis()
 //        val code = if (user != null) call.securityCode(date, user) else null
