@@ -8,6 +8,9 @@ import io.ktor.application.Application
 import io.ktor.application.ApplicationCall
 import io.ktor.application.ApplicationStopped
 import io.ktor.application.install
+import io.ktor.auth.Authentication
+import io.ktor.auth.authenticate
+import io.ktor.auth.jwt.jwt
 import io.ktor.features.*
 import io.ktor.freemarker.FreeMarker
 import io.ktor.gson.gson
@@ -20,14 +23,9 @@ import io.ktor.routing.Routing
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import io.ktor.sessions.SessionTransportTransformerMessageAuthentication
-import io.ktor.sessions.Sessions
-import io.ktor.sessions.cookie
-import io.ktor.util.hex
 import org.h2.Driver
 import org.jetbrains.exposed.sql.Database
 import routing.*
-import session.KweetSession
 import java.io.File
 import java.text.DateFormat
 
@@ -73,14 +71,17 @@ private fun Application.dependencies() {
     install(ConditionalHeaders)
     install(PartialContent)
     install(Locations)
+    install(Authentication) {
+        jwt {
+            verifier(JwtConfig.verifier)
+            realm = JwtConfig.realm
+            validate {
+                it.payload.getClaim("email").asString()?.let(userDao::getUserByEmail)
+            }
+        }
+    }
     install(FreeMarker) {
         templateLoader = ClassTemplateLoader(this::class.java.classLoader, "/templates")
-    }
-
-    install(Sessions) {
-        cookie<KweetSession>("SESSION") {
-            transform(SessionTransportTransformerMessageAuthentication(hex("4b8ca83")))
-        }
     }
 
     install(ContentNegotiation) {
@@ -102,7 +103,9 @@ private fun Application.routing() {
         styles()
         register(userDao)
         login(userDao)
-        userPage(userDao, noteDao)
+        authenticate {
+            userPage(userDao, noteDao)
+        }
         note(userDao, noteDao)
     }
 }
